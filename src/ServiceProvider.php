@@ -38,25 +38,23 @@ class ServiceProvider extends AddonServiceProvider
 
     private function bootNav()
     {
-        $forms = config('akismet.forms', []);
+        $handles = array_keys(config('akismet.forms', []));
 
-        if (! count($forms)) {
+        if (! count($handles)) {
             return;
         }
 
-        NavAPI::extend(function (Nav $nav) use ($forms) {
+        NavAPI::extend(function (Nav $nav) use ($handles) {
             $nav->content('Spam Queue')
                 ->section('Tools')
                 ->route('akismet.index')
                 ->icon('shield-key')
-                ->children(function () use ($forms) {
-                    return collect($forms)->flatMap(function (string $handle) {
-                        /** @var Form */
-                        $form = FormAPI::find($handle);
+                ->children(collect($handles)->flatMap(function (string $handle) {
+                    /** @var Form */
+                    $form = FormAPI::find($handle);
 
-                        return [$form->title() => cp_route('akismet.show', ['form' => $form->handle()])];
-                    })->all();
-                });
+                    return [$form->title() => cp_route('akismet.show', ['form' => $form->handle()])];
+                })->all());
         });
     }
 }

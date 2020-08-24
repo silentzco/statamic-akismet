@@ -7,7 +7,7 @@
         <h1>@yield('title')</h1>
     </div>
 
-    @foreach (Statamic\Facades\Form::all() as $form)
+    @foreach ($forms as $form)
         @if ($loop->first)
         <h3 class="pl-0 mb-1 little-heading">{{ __('Forms') }}</h3>
         <div class="p-0 mb-2 card">
