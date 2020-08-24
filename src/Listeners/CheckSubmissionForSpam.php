@@ -5,8 +5,9 @@ namespace Silentz\Akismet\Listeners;
 use Illuminate\Support\Facades\Storage;
 use nickurt\Akismet\Facade as AkismetAPI;
 use Statamic\Events\FormSubmitted;
-use Statamic\Exceptions\SilentFormFailureException;
 use Statamic\Facades\Path;
+use Statamic\Facades\Site;
+use Statamic\Facades\URL;
 use Statamic\Forms\Submission;
 use Statamic\Support\Arr;
 
@@ -21,7 +22,7 @@ class CheckSubmissionForSpam
         if ($this->shouldProcessForm($submission) && ($this->detectSpam($submission))) {
             $this->addToQueue($submission);
 
-            throw new SilentFormFailureException('Spam submitted');
+            return false;
         }
 
         return true;
@@ -29,7 +30,7 @@ class CheckSubmissionForSpam
 
     private function shouldProcessForm(Submission $submission): bool
     {
-        return in_array($submission->form->handle(), config('akismet.forms'));
+        return Arr::has(config('akismet.forms'), $submission->form->handle());
     }
 
     public function detectSpam(Submission $submission)
@@ -39,23 +40,15 @@ class CheckSubmissionForSpam
 
     private function convertSubmissionToAkismetData(Submission $submission): array
     {
-        return array_merge(
-            [
-                'blog' => $this->siteUrl,
-                'comment_type' => 'content-form',
-            ],
-            array_combine(
-                [
-                    'comment_author',
-                    'comment_author_email',
-                    'comment_content',
-                ],
-                array_only(
-                    $submission->toArray(),
-                    Arr::get(config('akismet.forms'), $submission->form->handle())
-                )
-            )
-        );
+        $config = Arr::get(config('akismet.forms'), $submission->form->handle());
+
+        return [
+            'blog' => URL::makeAbsolute(Site::default()->url()),
+            'comment_type' => 'content-form',
+            'comment_author' => $submission->get(Arr::get($config, 'author_field')),
+            'comment_author_email' => $submission->get(Arr::get($config, 'email_field')),
+            'comment_content' => $submission->get(Arr::get($config, 'content_field')),
+        ];
     }
 
     private function addToQueue(Submission $submission)
