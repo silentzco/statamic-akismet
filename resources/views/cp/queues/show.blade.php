@@ -6,7 +6,7 @@
     <header class="mb-3">
         @include('statamic::partials.breadcrumb', [
             'url' => cp_route('akismet.index'),
-            'title' => __('Forms')
+            'title' => __('Queues')
         ])
         <div class="flex items-center">
             <h1 class="flex-1">
@@ -18,7 +18,7 @@
 
     <spam-listing
         form="{{ $form->handle() }}"
-        :rows="{{ json_encode($spam) }}"
+        :initial-rows="{{ json_encode($spam) }}"
         :columns="{{ json_encode($columns) }}"
         run-action-url="{{ cp_route('forms.submissions.actions.run', $form->handle()) }}"
         bulk-actions-url="{{ cp_route('forms.submissions.actions.bulk', $form->handle()) }}"

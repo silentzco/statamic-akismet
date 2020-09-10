@@ -2,22 +2,25 @@
 
 namespace Silentz\Akismet;
 
+use Illuminate\Support\Facades\Log;
+use Silentz\Akismet\Actions\MarkAsSpam;
+use Silentz\Akismet\Listeners\CheckForSpam;
 use Silentz\Akismet\Listeners\CheckSubmissionForSpam;
 use Statamic\CP\Navigation\Nav;
 use Statamic\Events\FormSubmitted;
 use Statamic\Facades\CP\Nav as NavAPI;
 use Statamic\Facades\Form as FormAPI;
+use Statamic\Facades\Permission;
 use Statamic\Forms\Form;
 use Statamic\Providers\AddonServiceProvider;
+use Statamic\Statamic;
 
 class ServiceProvider extends AddonServiceProvider
 {
     protected $publishAfterInstall = false;
 
     protected $listen = [
-        // 'user.registered' => [
-        //     'Silentz\Akismet\AddFromUser',
-        // ],
+        // UserRegistering::class => [CheckForSpam::class],
         FormSubmitted::class => [CheckSubmissionForSpam::class],
     ];
 
@@ -33,7 +36,14 @@ class ServiceProvider extends AddonServiceProvider
     {
         parent::boot();
 
+        $this->bootActions();
         $this->bootNav();
+        $this->bootPermissions();
+    }
+
+    private function bootActions()
+    {
+        MarkAsSpam::register();
     }
 
     private function bootNav()
@@ -55,6 +65,16 @@ class ServiceProvider extends AddonServiceProvider
 
                     return [$form->title() => cp_route('akismet.show', ['form' => $form->handle()])];
                 })->all());
+        });
+    }
+
+    private function bootPermissions()
+    {
+        Statamic::booted(function () {
+            // Log::debug(Permission::all());
+            // Permission::get('edit blade entries')->addChild(
+            //     Permission::register('tweet {form} entries')
+            // );
         });
     }
 }
