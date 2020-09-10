@@ -2,14 +2,12 @@
 
 namespace Silentz\Akismet\Actions;
 
-use Silentz\Akismet\Concerns\Akismet;
+use Silentz\Akismet\Spam\Submission as SubmissionSpam;
 use Statamic\Actions\Action;
 use Statamic\Forms\Submission;
 
 class MarkAsSpam extends Action
 {
-    use Akismet;
-
     protected $dangerous = true;
 
     public function authorize($user, $item)
@@ -42,11 +40,11 @@ class MarkAsSpam extends Action
     public function run($submissions, $values)
     {
         $submissions->each(function (Submission $submission) {
+            $spam = new SubmissionSpam($submission);
 
-            // @TODO refactor this, it be ugly
-            $this->loadFromSubmission($submission);
-            $this->addToQueue();
-            // submit as spam
+            $spam->addToQueue();
+            $spam->submitSpam();
+
             $submission->delete();
         });
     }
