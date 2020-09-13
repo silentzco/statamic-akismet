@@ -60,15 +60,15 @@ Create your Statamic [forms](https://statamic.dev/forms#content) as usual. When 
 
 If it is spam, it gets put into that form's spam queue.
 
-![Spam Queues](https://github.com/silentzco/statamic-akismet/blob/main/images/menu.png)
+![Spam Queues](https://github.com/silentzco/statamic-akismet/blob/main/images/menu.png?raw=true)
 
 From there you can discard (delete) it, or approve it. Approving it will put it back into the normal submissions and tell Akismet that it is not spam (to help with learning).
 
-![Approval/Discarding](https://github.com/silentzco/statamic-akismet/blob/main/images/approval-discarding.png)
+![Approval/Discarding](https://github.com/silentzco/statamic-akismet/blob/main/images/approval-discarding.png?raw=true)
 
 If you find a submission that is spam, you can mark it as spam (image). This will put it in the spam queue and tell Akismet it is spam.
 
-![Mark As Spam](https://github.com/silentzco/statamic-akismet/blob/main/images/mark-as-spam.png)
+![Mark As Spam](https://github.com/silentzco/statamic-akismet/blob/main/images/mark-as-spam.png?raw=true)
 
 ## Testing
 
