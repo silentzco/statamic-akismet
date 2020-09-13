@@ -3,7 +3,7 @@
     "type": "statamic-addon",
     "require": {
         "php": "^7.4",
-        "guzzlehttp/guzzle": "^6.0",
+        "laravel/framework": "^7.0",
         "nickurt/laravel-akismet": "^1.8",
         "pixelfear/composer-dist-plugin": "^0.1.2",
         "statamic/cms": "^3.0"
@@ -37,7 +37,7 @@
     "extra": {
         "download-dist": {
             "url": "https://github.com/silentzco/statamic-akistmet/releases/download/{$version}/dist.tar.gz",
-            "path": "resources/dist"
+            "path": "dist"
         },
         "statamic": {
             "name": "Akismet",
