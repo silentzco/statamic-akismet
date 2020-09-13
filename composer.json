@@ -36,7 +36,7 @@
     },
     "extra": {
         "download-dist": {
-            "url": "https://github.com/silentzco/statamic-akistmet/releases/download/{$version}/dist.tar.gz",
+            "url": "https://github.com/silentzco/statamic-akismet/releases/download/{$version}/dist.tar.gz",
             "path": "dist"
         },
         "statamic": {
