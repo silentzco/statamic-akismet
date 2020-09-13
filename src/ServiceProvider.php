@@ -29,7 +29,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $scripts = [
-        __DIR__.'/../resources/dist/js/cp.js',
+        __DIR__.'/../dist/js/cp.js',
     ];
 
     public function boot()
