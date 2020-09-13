@@ -1,0 +1,38 @@
+title: Contact
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: email
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          listable: hidden
+          display: Email
+      -
+        handle: name
+        field:
+          input_type: text
+          type: text
+          localizable: false
+          listable: hidden
+          display: 'Name'
+      -
+        handle: permission
+        field:
+          inline: false
+          options:
+            'true': Permission
+          type: checkboxes
+          localizable: false
+          listable: hidden
+          display: Permission
+      -
+        handle: message
+        field:
+          type: text
+          localizable: false
+          listable: hidden
+          display: Message
