@@ -88,7 +88,6 @@
                         this.$toast.success('Spam discarded');
                     })
                     .catch(e => {
-                        console.log(e);
                         this.discarding = false;
                         this.$toast.error(e.response
                             ? e.response.data.message
