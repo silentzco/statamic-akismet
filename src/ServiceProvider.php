@@ -17,7 +17,7 @@ use Statamic\Statamic;
 
 class ServiceProvider extends AddonServiceProvider
 {
-    protected $publishAfterInstall = false;
+    protected $publishAfterInstall = true;
 
     protected $listen = [
         // UserRegistering::class => [CheckForSpam::class],
