@@ -60,11 +60,14 @@ class ServiceProvider extends AddonServiceProvider
                 ->route('akismet.index')
                 ->icon('shield-key')
                 ->children(collect($handles)->flatMap(function (string $handle) {
-                    /** @var Form */
-                    $form = FormAPI::find($handle);
+                    /* @var Form */
+                    if (! $form = FormAPI::find($handle)) {
+                        return;
+                    }
 
                     return [$form->title() => cp_route('akismet.show', ['form' => $form->handle()])];
-                })->all());
+                })->filter()
+                ->all());
         });
     }
 
