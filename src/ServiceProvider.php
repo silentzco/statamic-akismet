@@ -2,7 +2,6 @@
 
 namespace Silentz\Akismet;
 
-use Illuminate\Support\Facades\Log;
 use Silentz\Akismet\Actions\MarkAsSpam;
 use Silentz\Akismet\Listeners\CheckForSpam;
 use Silentz\Akismet\Listeners\CheckSubmissionForSpam;
@@ -13,7 +12,6 @@ use Statamic\Facades\Form as FormAPI;
 use Statamic\Facades\Permission;
 use Statamic\Forms\Form;
 use Statamic\Providers\AddonServiceProvider;
-use Statamic\Statamic;
 
 class ServiceProvider extends AddonServiceProvider
 {
@@ -59,6 +57,7 @@ class ServiceProvider extends AddonServiceProvider
                 ->section('Tools')
                 ->route('akismet.index')
                 ->icon('shield-key')
+                ->can('manage spam')
                 ->children(collect($handles)->flatMap(function (string $handle) {
                     /* @var Form */
                     if (! $form = FormAPI::find($handle)) {
@@ -73,11 +72,8 @@ class ServiceProvider extends AddonServiceProvider
 
     private function bootPermissions()
     {
-        Statamic::booted(function () {
-            // Log::debug(Permission::all());
-            // Permission::get('edit blade entries')->addChild(
-            //     Permission::register('tweet {form} entries')
-            // );
+        Permission::group('forms', function () {
+            Permission::register('manage spam')->label('Manage Spam');
         });
     }
 }

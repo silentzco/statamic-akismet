@@ -12,7 +12,7 @@ class MarkAsSpam extends Action
 
     public function authorize($user, $item)
     {
-        return true; //$user->can('edit', $item);
+        return$user->can('manage spam', $item);
     }
 
     public function buttonText()
