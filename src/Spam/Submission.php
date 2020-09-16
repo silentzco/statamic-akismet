@@ -51,9 +51,23 @@ class Submission extends AbstractSpam
         return [
             'blog' => URL::makeAbsolute(Site::default()->url()),
             'comment_type' => 'contact-form',
-            'comment_author' => $this->submission->get(Arr::get($config, 'author_field')),
+            'comment_author' => $this->getName(),
             'comment_author_email' => $this->submission->get(Arr::get($config, 'email_field')),
             'comment_content' => $this->submission->get(Arr::get($config, 'content_field')),
         ];
+    }
+
+    private function getName(): string
+    {
+        $config = Arr::get(config('akismet.forms'), $this->submission->form->handle());
+
+        if ($name = Arr::get($config, 'name_field', Arr::get($config, 'author_field'))) {
+            return trim($this->submission->get($name));
+        }
+
+        $firstName = $this->submission->get(Arr::get($config, 'first_name_field'));
+        $lastName = $this->submission->get(Arr::get($config, 'last_name_field'));
+
+        return trim($firstName.' '.$lastName);
     }
 }
