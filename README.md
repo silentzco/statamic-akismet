@@ -43,8 +43,16 @@ return [
 
     // these are the form handles you'd like to check for spam
     'forms' => [
+
+        // the handle of your form
         'contact_us' => [
-            'author_field' => 'name',
+
+            // use `name_field` if you store both first and last name
+            'name_field' => 'name',   // `name` in this case is the field in your form
+
+            // use `first_name_field` & `last_name_field` if you store them separately
+            'first_name_field' => 'first_name',
+            'last_name_field' => 'last_name',
             'email_field' => 'email',
             'content_field' => 'message',
         ],
