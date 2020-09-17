@@ -51,7 +51,7 @@ class Submission extends AbstractSpam
             );
     }
 
-    public function addToSubmissions()
+    public function addToSubmissions(): void
     {
         $this->submission->save();
     }

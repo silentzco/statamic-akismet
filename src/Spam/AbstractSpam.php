@@ -32,7 +32,7 @@ abstract class AbstractSpam implements Spam
     {
     }
 
-    public function addToSumissions(): void
+    public function addToSubmissions(): void
     {
     }
 
