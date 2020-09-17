@@ -7,6 +7,7 @@ use Statamic\Events\Event;
 use Statamic\Facades\Path;
 use Statamic\Facades\Site;
 use Statamic\Facades\URL;
+use Statamic\Forms\Form;
 use Statamic\Forms\Submission as StatamicSubmission;
 use Statamic\Support\Arr;
 
@@ -17,6 +18,17 @@ class Submission extends AbstractSpam
     public static function createFromEvent(Event $event): Spam
     {
         return new self($event->submission);
+    }
+
+    public static function createFromQueue(Form $form, string $id): Spam
+    {
+        /** @var \Statamic\Forms\Submission */
+        $submission = $form
+            ->makeSubmission()
+            ->id($id)
+            ->data(unserialize(Storage::get(Path::assemble('spam', $form->handle(), $id))));
+
+        return new self($submission);
     }
 
     public function __construct(StatamicSubmission $submission)
@@ -37,6 +49,11 @@ class Submission extends AbstractSpam
                 Path::assemble('spam', $this->submission->form->handle(), $this->submission->id()),
                 serialize($this->submission->data())
             );
+    }
+
+    public function addToSubmissions()
+    {
+        $this->submission->save();
     }
 
     public function removeFromQueue(): void

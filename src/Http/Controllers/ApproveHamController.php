@@ -2,8 +2,7 @@
 
 namespace Silentz\Akismet\Http\Controllers;
 
-use Illuminate\Support\Facades\Storage;
-use Statamic\Facades\Path;
+use Silentz\Akismet\Spam\Submission;
 use Statamic\Forms\Form;
 use Statamic\Http\Controllers\Controller;
 
@@ -11,8 +10,11 @@ class ApproveHamController extends Controller
 {
     public function __invoke(Form $form, string $id)
     {
-        // move back to form directory
-        // submit ham
+        $spam = Submission::createFromQueue($form, $id);
+
+        $spam->addToSubmissions();
+
+        $spam->submitHam();
 
         return response()->noContent();
     }
