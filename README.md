@@ -22,12 +22,19 @@ The package will automatically register itself.
 
 ## Configuration
 
+### .env
 Set your Akismet API Key in your `.env` file. You can get it from: https://akismet.com/account/.
 
 ```yaml
 AKISMET_API_KEY=your-key-here
 ```
 
+### Permission
+In order to manage your spam, you'll either have to be super user or have the `manage spam` permission:
+
+[![Permission](https://github.com/silentzco/statamic-akismet/blob/main/images/permission.png?raw=true)
+
+### Settings
 To publish the config file to `config/akismet.php` run:
 
 ```bash
