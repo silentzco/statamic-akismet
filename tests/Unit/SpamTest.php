@@ -59,4 +59,24 @@ class SpamTest extends TestCase
 
         $this->assertFalse(FormSubmitted::dispatch($this->submission));
     }
+
+    /** @test */
+    public function can_detect_spam_with_only_email()
+    {
+        config([
+            'akismet.forms' => [
+                'contact_us' => [
+                    'email_field' => 'email',
+                ],
+            ],
+        ]);
+
+        $submission = $this->form->makeSubmission()->data(
+            [
+                'email' => 'akismet-guaranteed-spam@example.com',
+            ]
+        );
+
+        $this->assertFalse(FormSubmitted::dispatch($submission));
+    }
 }
