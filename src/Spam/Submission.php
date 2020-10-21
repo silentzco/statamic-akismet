@@ -20,7 +20,7 @@ class Submission extends AbstractSpam
         return new self($event->submission);
     }
 
-    public static function createFromQueue(Form $form, string $id): Spam
+    public static function createFromQueue(Form $form, string $id): self
     {
         /** @var \Statamic\Forms\Submission */
         $submission = $form
@@ -36,6 +36,11 @@ class Submission extends AbstractSpam
         parent::__construct();
 
         $this->submission = $submission;
+    }
+
+    public function submission(): StatamicSubmission
+    {
+        return $this->submission;
     }
 
     public function shouldProcess(): bool
@@ -80,6 +85,10 @@ class Submission extends AbstractSpam
 
         if ($name = Arr::get($config, 'name_field', Arr::get($config, 'author_field'))) {
             return trim($this->submission->get($name));
+        }
+
+        if (! Arr::has($config, 'first_name_field') && ! Arr::has($config, 'last_name_field')) {
+            return '';
         }
 
         $firstName = $this->submission->get(Arr::get($config, 'first_name_field'));
