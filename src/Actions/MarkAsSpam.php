@@ -32,6 +32,11 @@ class MarkAsSpam extends Action
         return $item instanceof Submission;
     }
 
+    public function visibleTo($item)
+    {
+        return $item instanceof Submission;
+    }
+
     /**
      * @param \Illuminate\Support\Collection $submissions
      * @param array $values
