@@ -2,6 +2,7 @@
 
 namespace Silentz\Akismet\Tests;
 
+use nickurt\Akismet\ServiceProvider as AkismetServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Silentz\Akismet\ServiceProvider;
 use Statamic\Extend\Manifest;
@@ -17,7 +18,7 @@ class TestCase extends OrchestraTestCase
 
     protected function getPackageProviders($app)
     {
-        return [StatamicServiceProvider::class, ServiceProvider::class];
+        return [StatamicServiceProvider::class, ServiceProvider::class, AkismetServiceProvider::class];
     }
 
     protected function getPackageAliases($app)
