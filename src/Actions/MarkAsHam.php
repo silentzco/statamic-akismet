@@ -2,12 +2,12 @@
 
 namespace Silentz\Akismet\Actions;
 
+use Illuminate\Support\Str;
 use Silentz\Akismet\Spam\Submission as SubmissionSpam;
 use Statamic\Actions\Action;
 use Statamic\Forms\Submission;
-use Statamic\Support\Str;
 
-class MarkAsSpam extends Action
+class MarkAsHam extends Action
 {
     protected $dangerous = true;
 
@@ -19,18 +19,18 @@ class MarkAsSpam extends Action
     public function buttonText()
     {
         /* @translation */
-        return 'Spam|Spam';
+        return 'Ham|Ham';
     }
 
     public function confirmationText()
     {
         /* @translation */
-        return 'Are you sure this submission is spam?|Are you sure these :count submissions are spam?';
+        return 'Are you sure this submission is ham?|Are you sure these :count submissions are ham?';
     }
 
     public function visibleTo($item)
     {
-        return $item instanceof Submission && ! Str::of(request()->url())->contains('akismet/queues');
+        return $item instanceof Submission && Str::of(request()->url())->contains('akismet/queues');
     }
 
     /**
@@ -43,10 +43,10 @@ class MarkAsSpam extends Action
         $submissions->each(function (Submission $submission) {
             $spam = new SubmissionSpam($submission);
 
-            $spam->addToQueue();
-            $spam->submitSpam();
+            $spam->removeFromQueue();
+            $spam->submitHam();
 
-            $submission->delete();
+            $submission->save();
         });
     }
 }
