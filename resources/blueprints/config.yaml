@@ -1,0 +1,53 @@
+api_key:
+  input_type: text
+  display: 'API Key'
+  type: text
+  read_only: true
+forms:
+  fields:
+    -
+      handle: handle
+      field:
+        input_type: text
+        display: Handle
+        type: text
+        width: 33
+    -
+      handle: name_field
+      field:
+        input_type: text
+        display: 'Name Field'
+        type: text
+        width: 33
+    -
+      handle: first_name_field
+      field:
+        input_type: text
+        display: 'First Name Field'
+        type: text
+        width: 33
+    -
+      handle: last_name_field
+      field:
+        input_type: text
+        display: 'Last Name Field'
+        type: text
+        width: 33
+    -
+      handle: email_field
+      field:
+        input_type: text
+        display: 'Email Field'
+        type: text
+        width: 33
+    -
+      handle: content_field
+      field:
+        input_type: text
+        display: 'Content Field'
+        type: text
+        width: 33
+  mode: table
+  reorderable: false
+  display: Forms
+  type: grid
