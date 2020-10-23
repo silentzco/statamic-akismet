@@ -2,6 +2,7 @@
 
 namespace Silentz\Akismet;
 
+use Silentz\Akismet\Actions\MarkAsHam;
 use Silentz\Akismet\Actions\MarkAsSpam;
 use Silentz\Akismet\Listeners\CheckForSpam;
 use Silentz\Akismet\Listeners\CheckSubmissionForSpam;
@@ -42,6 +43,7 @@ class ServiceProvider extends AddonServiceProvider
     private function bootActions()
     {
         MarkAsSpam::register();
+        MarkAsHam::register();
     }
 
     private function bootNav()
@@ -55,7 +57,7 @@ class ServiceProvider extends AddonServiceProvider
         NavAPI::extend(function (Nav $nav) use ($handles) {
             $nav->content('Spam Queue')
                 ->section('Tools')
-                ->route('akismet.index')
+                ->route('akismet.queues.index')
                 ->icon('shield-key')
                 ->can('manage spam')
                 ->children(collect($handles)->flatMap(function (string $handle) {
@@ -64,10 +66,17 @@ class ServiceProvider extends AddonServiceProvider
                         return;
                     }
 
-                    return [$form->title() => cp_route('akismet.show', ['form' => $form->handle()])];
+                    return [$form->title() => cp_route('akismet.queues.show', ['form' => $form->handle()])];
                 })->filter()
                 ->all());
         });
+
+        // NavAPI::extend(function (Nav $nav) use ($handles) {
+        //     $nav->content('Test')
+        //         ->section('Tools')
+        //         ->route('akismet.config.edit')
+        //         ->icon('shield-key');
+        // });
     }
 
     private function bootPermissions()

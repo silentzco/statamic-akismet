@@ -1,99 +1,96 @@
 <template>
     <div>
-        <data-list :columns="columns" :sort="false" :rows="rows">
-            <div class="p-0 card" slot-scope="{ filteredRows: rows }">
-                <data-list-table :rows="rows" :allow-bulk-actions="true">
-                    <template slot="cell-id" slot-scope="{ row: submission }">
-                        <a :href="submission.show_url">{{ submission.id }}</a>
-                    </template>
-                    <template slot="actions" slot-scope="{ row: submission, index }">
-                        <dropdown-list>
-                            <dropdown-item
-                                :text="__('Approve')"
-                                @click="approving = submission.id"
-                            >
-                                <confirmation-modal
-                                    v-if="approving"
-                                    title="Approve"
-                                    :bodyText="__('Are you sure you want to approve this submission?')"
-                                    :buttonText="__('Approve')"
-                                    :danger="true"
-                                    @confirm="approve(submission.id, index)"
-                                    @cancel="approving = false"
-                                >
-                                </confirmation-modal>
-                            </dropdown-item>
-                            <dropdown-item
-                                :text="__('Discard')"
-                                class="warning"
-                                @click="discarding = submission.id"
-                            >
-                                <confirmation-modal
-                                    v-if="discarding"
-                                    title="Discard"
-                                    :bodyText="__('Are you sure you want to discard this submission?')"
-                                    :buttonText="__('Discard')"
-                                    :danger="true"
-                                    @confirm="discard(submission.id, index)"
-                                    @cancel="discarding = false"
-                                >
-                                </confirmation-modal>
-                            </dropdown-item>
-                        </dropdown-list>
-                    </template>
-                </data-list-table>
+
+        <div v-if="initializing" class="card loading">
+            <loading-graphic />
+        </div>
+
+        <slot name="no-results" v-if="!loading && !searchQuery && items.length === 0" />
+
+        <data-list
+            v-else-if="!initializing"
+            :columns="columns"
+            :rows="items"
+            :sort="false"
+            :sort-column="sortColumn"
+            :sort-direction="sortDirection"
+        >
+            <div slot-scope="{ hasSelections }">
+                <div class="relative p-0 card">
+                    <div class="data-list-header min-h-16">
+                        <data-list-filters
+                            :search-query="searchQuery"
+                            @search-changed="searchChanged"
+                            @reset="filtersReset"
+                        />
+                    </div>
+
+                    <div v-show="items.length === 0" class="p-3 text-center text-grey-50" v-text="__('No results')" />
+
+                    <data-list-bulk-actions
+                        :url="bulkActionsUrl"
+                        @started="actionStarted"
+                        @completed="actionCompleted"
+                    />
+
+                    <data-list-table
+                        v-if="items.length"
+                        :allow-bulk-actions="true"
+                        :allow-column-picker="true"
+                        :column-preferences-key="preferencesKey('columns')"
+                        @sorted="sorted"
+                    >
+                        <template slot="cell-datestamp" slot-scope="{ row: submission, value }">
+                            <a :href="submissionUrl(submission)" class="text-blue">{{ value }}</a>
+                        </template>
+                        <template slot="actions" slot-scope="{ row: submission, index }">
+                            <dropdown-list>
+                                <dropdown-item :text="__('View')" :redirect="submissionUrl(submission)" />
+                                <data-list-inline-actions
+                                    :item="submission.id"
+                                    :url="runActionUrl"
+                                    :actions="submission.actions"
+                                    @started="actionStarted"
+                                    @completed="actionCompleted"
+                                />
+                            </dropdown-list>
+                        </template>
+                    </data-list-table>
+                </div>
+
+                <data-list-pagination
+                    class="mt-3"
+                    :resource-meta="meta"
+                    :per-page="perPage"
+                    @page-selected="selectPage"
+                    @per-page-changed="changePerPage"
+                />
             </div>
         </data-list>
+
     </div>
 </template>
 
 <script>
-    export default {
-        props: {
-            form: String,
-            columns: Array,
-            initialRows: Array,
-        },
+export default {
+    mixins: [Listing],
 
-        data() {
-            return {
-                approving: false,
-                discarding: false,
-                listingKey: "submissions",
-                preferencesPrefix: `forms.${this.form}`,
-                rows: this.initialRows,
-                requestUrl: cp_url(`forms/${this.form}/submissions`),
-            };
-        },
-        methods: {
-            approve(id, index) {
-                this.$axios.post(cp_url(`akismet/spam/${this.form}/${id}`))
-                    .then(() => {
-                        this.rows.splice(index, 1);
-                        this.approving = false;
-                        this.$toast.success('Spam approved');
-                    })
-                    .catch(e => {
-                        this.approving = false;
-                        this.$toast.error(e.response
-                            ? e.response.data.message
-                            : __('Something went wrong'));
-                    });
-            },
-            discard(id, index) {
-                this.$axios.delete(cp_url(`akismet/spam/${this.form}/${id}`))
-                    .then(() => {
-                        this.rows.splice(index, 1);
-                        this.discarding = false;
-                        this.$toast.success('Spam discarded');
-                    })
-                    .catch(e => {
-                        this.discarding = false;
-                        this.$toast.error(e.response
-                            ? e.response.data.message
-                            : __('Something went wrong'));
-                    });
-            },
+    props: {
+        form: String
+    },
+
+    data() {
+        return {
+            listingKey: 'submissions',
+            preferencesPrefix: `forms.${this.form}`,
+            requestUrl: cp_url(`akismet/queues/${this.form}/submissions`),
         }
-    };
+    },
+    methods: {
+        submissionUrl(submission) {
+            return cp_url(`akismet/queues/${this.form}/submissions/${submission.id}`);
+        }
+    }
+
+}
 </script>

@@ -12,26 +12,28 @@ class QueueController extends Controller
 {
     public function __invoke(Form $form)
     {
-        $columns = [
-            Column::make('name')->label(__('akismet::cp.name')),
-            Column::make('email')->label(__('akismet::cp.email')),
-            Column::make('content')->label(__('akismet::cp.content')),
-        ];
+        return view('akismet::cp.queues.show', ['form' => $form]);
 
-        $paths = Storage::files("spam/{$form->handle()}");
+        // $columns = [
+        //     Column::make('name')->label(__('akismet::cp.name')),
+        //     Column::make('email')->label(__('akismet::cp.email')),
+        //     Column::make('content')->label(__('akismet::cp.content')),
+        // ];
 
-        $spam = collect($paths)->map(function ($path) use ($form) {
-            return tap(new Submission(), function ($submission) use ($path, $form) {
-                $submission->id(basename($path));
-                $submission->form($form);
-                $submission->data(unserialize(Storage::get($path)));
-            });
-        });
+        // $paths = Storage::files("spam/{$form->handle()}");
 
-        return view('akismet::cp.queues.show', [
-            'columns' => $columns,
-            'form' => $form,
-            'spam' => $spam,
-        ]);
+        // $spam = collect($paths)->map(function ($path) use ($form) {
+        //     return tap(new Submission(), function ($submission) use ($path, $form) {
+        //         $submission->id(basename($path));
+        //         $submission->form($form);
+        //         $submission->data(unserialize(Storage::get($path)));
+        //     });
+        // });
+
+        // return view('akismet::cp.queues.show', [
+        //     'columns' => $columns,
+        //     'form' => $form,
+        //     'spam' => $spam,
+        // ]);
     }
 }
