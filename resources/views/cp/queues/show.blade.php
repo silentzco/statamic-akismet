@@ -5,8 +5,8 @@
 
     <header class="mb-3">
         @include('statamic::partials.breadcrumb', [
-            'url' => cp_route('forms.index'),
-            'title' => __('Forms')
+            'url' => cp_route('akismet.queues.index'),
+            'title' => __('Spam Queues')
         ])
         <div class="flex items-center">
             <h1 class="flex-1">
