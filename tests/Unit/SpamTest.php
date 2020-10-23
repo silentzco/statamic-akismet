@@ -21,14 +21,11 @@ class SpamTest extends TestCase
 
         FormAPI::all()->each->delete();
 
-//        $blueprint = (new Blueprint)->setHandle('contact')->save();
         $path = __DIR__.'/../__fixtures__/contact_us.yaml';
         $contents = YAML::file($path)->parse();
+        $blueprint = Blueprint::make()->setContents($contents);
 
-        (new Blueprint)
-            ->setInitialPath($path)
-            ->setHandle('contact_us')
-            ->setContents($contents);
+        Blueprint::shouldReceive('find')->with('forms.contact_us')->andReturn($blueprint);
 
         $this->form = FormAPI::make('contact_us')
             ->title('Contact Us');
