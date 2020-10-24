@@ -49,7 +49,7 @@
                                 <data-list-inline-actions
                                     :item="submission.id"
                                     :url="runActionUrl"
-                                    :actions="submission.actions"
+                                    :actions="submission.actions.filter(action => action.handle != 'delete')"
                                     @started="actionStarted"
                                     @completed="actionCompleted"
                                 />
