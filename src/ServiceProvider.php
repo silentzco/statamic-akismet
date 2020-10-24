@@ -56,7 +56,7 @@ class ServiceProvider extends AddonServiceProvider
 
         NavAPI::extend(function (Nav $nav) use ($handles) {
             $nav->content('Spam Queue')
-                ->section('Tools')
+                ->section('Akismet')
                 ->route('akismet.queues.index')
                 ->icon('shield-key')
                 ->can('manage spam')
@@ -71,12 +71,12 @@ class ServiceProvider extends AddonServiceProvider
                 ->all());
         });
 
-        // NavAPI::extend(function (Nav $nav) use ($handles) {
-        //     $nav->content('Test')
-        //         ->section('Tools')
-        //         ->route('akismet.config.edit')
-        //         ->icon('shield-key');
-        // });
+        NavAPI::extend(function (Nav $nav) use ($handles) {
+            $nav->content('Config')
+                ->section('Akismet')
+                ->route('akismet.config.edit')
+                ->icon('settings-horizontal');
+        });
     }
 
     private function bootPermissions()

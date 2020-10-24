@@ -10,10 +10,10 @@ use Silentz\Akismet\Http\Controllers\QueuesController;
 use Silentz\Akismet\Http\Controllers\SpamController;
 
 Route::name('akismet.')->prefix('akismet')->group(function () {
-    // Route::name('config.')->prefix('config')->group(function () {
-    //     Route::get('edit', [ConfigurationController::class, 'edit'])->name('edit');
-    //     Route::post('update', [ConfigurationController::class, 'update'])->name('update');
-    // });
+    Route::name('config.')->prefix('config')->group(function () {
+        Route::get('edit', [ConfigurationController::class, 'edit'])->name('edit');
+        Route::post('update', [ConfigurationController::class, 'update'])->name('update');
+    });
     Route::prefix('queues')->group(function () {
         Route::name('actions.')->group(function () {
             Route::post('/{form}/submissions/actions', [ActionController::class, 'run'])->name('run');
