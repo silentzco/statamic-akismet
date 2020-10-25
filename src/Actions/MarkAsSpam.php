@@ -43,7 +43,7 @@ class MarkAsSpam extends Action
             $spam = new SubmissionSpam($submission);
 
             $spam->addToQueue();
-            // $spam->submitSpam();
+            $spam->submitSpam();
 
             $submission->delete();
         });

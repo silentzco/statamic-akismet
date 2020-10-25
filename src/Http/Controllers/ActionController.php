@@ -3,6 +3,7 @@
 namespace Silentz\Akismet\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
+use Silentz\Akismet\Spam\Submission;
 use Statamic\Facades\Path;
 use Statamic\Http\Controllers\CP\ActionController as StatamicActionController;
 
@@ -13,8 +14,8 @@ class ActionController extends StatamicActionController
         /** @var \Statamic\Forms\Form */
         $form = $this->request->route('form');
 
-        return $ids->map(fn ($id) => $form->makeSubmission()
+        return $ids->map(fn ($id) => new Submission($form->makeSubmission()
                 ->id($id)
-                ->data(unserialize(Storage::get(Path::assemble('spam', $form->handle(), $id)))));
+                ->data(unserialize(Storage::get(Path::assemble('spam', $form->handle(), $id))))));
     }
 }

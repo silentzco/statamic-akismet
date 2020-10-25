@@ -38,16 +38,6 @@ class Submission extends AbstractSpam
         $this->submission = $submission;
     }
 
-    public function submission(): StatamicSubmission
-    {
-        return $this->submission;
-    }
-
-    public function shouldProcess(): bool
-    {
-        return Arr::has(config('akismet.forms'), $this->submission->form->handle());
-    }
-
     public function addToQueue(): void
     {
         Storage::put(
@@ -61,9 +51,19 @@ class Submission extends AbstractSpam
         $this->submission->save();
     }
 
-    public function removeFromQueue(): void
+    public function delete(): void
     {
         Storage::delete(Path::assemble('spam', $this->submission->form()->handle(), $this->submission->id()));
+    }
+
+    public function submission(): StatamicSubmission
+    {
+        return $this->submission;
+    }
+
+    public function shouldProcess(): bool
+    {
+        return Arr::has(config('akismet.forms'), $this->submission->form->handle());
     }
 
     protected function akismetData(): array

@@ -8,15 +8,15 @@ interface Spam
 {
     public static function createFromEvent(Event $event): self;
 
-    public function shouldProcess(): bool;
-
-    public function isSpam(): bool;
+    public function addToSubmissions(): void;
 
     public function addToQueue(): void;
 
-    public function addToSubmissions(): void;
+    public function isSpam(): bool;
 
-    public function removeFromQueue(): void;
+    public function delete(): void;
+
+    public function shouldProcess(): bool;
 
     public function submitHam(): bool;
 

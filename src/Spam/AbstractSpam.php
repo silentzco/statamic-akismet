@@ -13,6 +13,18 @@ abstract class AbstractSpam implements Spam
         $this->akismetApi = app('Akismet');
     }
 
+    public function addToQueue(): void
+    {
+    }
+
+    public function addToSubmissions(): void
+    {
+    }
+
+    public function delete(): void
+    {
+    }
+
     public function isSpam(): bool
     {
         return $this->akismetApi->fill($this->akismetData())->isSpam();
@@ -26,18 +38,6 @@ abstract class AbstractSpam implements Spam
     public function submitSpam(): bool
     {
         return $this->akismetApi->fill($this->akismetData())->reportSpam();
-    }
-
-    public function addToQueue(): void
-    {
-    }
-
-    public function addToSubmissions(): void
-    {
-    }
-
-    public function removeFromQueue(): void
-    {
     }
 
     abstract protected function akismetData(): array;
