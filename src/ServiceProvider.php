@@ -2,6 +2,7 @@
 
 namespace Silentz\Akismet;
 
+use Illuminate\Support\Facades\Storage;
 use Silentz\Akismet\Actions\MarkAsHam;
 use Silentz\Akismet\Actions\MarkAsSpam;
 use Silentz\Akismet\Listeners\CheckForSpam;
@@ -10,6 +11,7 @@ use Statamic\CP\Navigation\Nav;
 use Statamic\Events\FormSubmitted;
 use Statamic\Facades\CP\Nav as NavAPI;
 use Statamic\Facades\Form as FormAPI;
+use Statamic\Facades\Path;
 use Statamic\Facades\Permission;
 use Statamic\Forms\Form;
 use Statamic\Providers\AddonServiceProvider;
@@ -66,7 +68,9 @@ class ServiceProvider extends AddonServiceProvider
                         return;
                     }
 
-                    return [$form->title() => cp_route('akismet.spam.index', ['form' => $form->handle()])];
+                    $title = $form->title().' ('.count(Storage::files(Path::assemble('spam', $form->handle()))).')';
+
+                    return [$title => cp_route('akismet.spam.index', ['form' => $form->handle()])];
                 })->filter()
                 ->all());
         });
