@@ -1,5 +1,6 @@
 @extends('statamic::layout')
-@section('title', __('Spam'))
+
+@section('title', __('Spam Queues'))
 
 @section('content')
 

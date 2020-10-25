@@ -1,5 +1,7 @@
 @extends('statamic::layout')
 
+@section('title', __('Config'))
+
 @section('content')
     <publish-form
         title="Configuration"

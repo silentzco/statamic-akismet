@@ -1,6 +1,6 @@
 @extends('statamic::layout')
 
-@section('title', Statamic::crumb('Submission ' . $submission->id(), $submission->form->title(), 'Forms'))
+@section('title', Statamic::crumb(__('Spam'), $submission->form->title(), __('Spam Queues')))
 
 @section('content')
 
