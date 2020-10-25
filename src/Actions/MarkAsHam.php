@@ -2,7 +2,6 @@
 
 namespace Silentz\Akismet\Actions;
 
-use Illuminate\Support\Str;
 use Silentz\Akismet\Spam\Submission as SubmissionSpam;
 use Statamic\Actions\Action;
 use Statamic\Forms\Submission;
@@ -30,7 +29,7 @@ class MarkAsHam extends Action
 
     public function visibleTo($item)
     {
-        return $item instanceof Submission && Str::of(request()->url())->contains('akismet/queues');
+        return $item instanceof Submission && request()->routeIs('statamic.cp.akismet.api.index');
     }
 
     /**
@@ -44,7 +43,7 @@ class MarkAsHam extends Action
             $spam = new SubmissionSpam($submission);
 
             $spam->removeFromQueue();
-            $spam->submitHam();
+            // $spam->submitHam();
 
             $submission->save();
         });

@@ -1,12 +1,12 @@
 <?php
 
-namespace Silentz\Akismet\Http\Controllers;
+namespace Silentz\Akismet\Http\Controllers\Ham;
 
 use Silentz\Akismet\Spam\Submission;
 use Statamic\Forms\Form;
 use Statamic\Http\Controllers\Controller;
 
-class ApproveHamController extends Controller
+class StoreHamController extends Controller
 {
     public function __invoke(Form $form, string $id)
     {

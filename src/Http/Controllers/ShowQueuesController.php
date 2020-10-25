@@ -7,7 +7,7 @@ use Statamic\Facades\Form;
 use Statamic\Http\Controllers\Controller;
 use Statamic\Support\Str;
 
-class QueuesController extends Controller
+class ShowQueuesController extends Controller
 {
     public function __invoke()
     {

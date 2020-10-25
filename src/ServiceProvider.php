@@ -66,7 +66,7 @@ class ServiceProvider extends AddonServiceProvider
                         return;
                     }
 
-                    return [$form->title() => cp_route('akismet.queues.show', ['form' => $form->handle()])];
+                    return [$form->title() => cp_route('akismet.spam.index', ['form' => $form->handle()])];
                 })->filter()
                 ->all());
         });

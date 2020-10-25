@@ -1,4 +1,5 @@
 @extends('statamic::layout')
+
 @section('title', Statamic::crumb($form->title(), 'Forms'))
 
 @section('content')

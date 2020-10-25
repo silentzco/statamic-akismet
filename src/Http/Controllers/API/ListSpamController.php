@@ -1,11 +1,9 @@
 <?php
 
-namespace Silentz\Akismet\Http\Controllers;
+namespace Silentz\Akismet\Http\Controllers\API;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Silentz\Akismet\Spam\Submission;
 use Statamic\Extensions\Pagination\LengthAwarePaginator;
 use Statamic\Facades\Config;
 use Statamic\Forms\Form;
@@ -13,28 +11,9 @@ use Statamic\Forms\Submission as StatamicSubmission;
 use Statamic\Http\Controllers\CP\CpController;
 use Statamic\Http\Resources\CP\Submissions\Submissions;
 
-class SpamController extends CpController
+class ListSpamController extends CpController
 {
-    public function show(Form $form, string $id)
-    {
-        if (! $submission = Submission::createFromQueue($form, $id)->submission()) {
-            return $this->pageNotFound();
-        }
-
-        $blueprint = $submission->blueprint();
-        $fields = $blueprint->fields()->addValues($submission->data())->preProcess();
-        // statamic.cp.akismet.spam.show
-        return view('akismet::cp.spam.show', [
-            'form' => $form,
-            'submission' => $submission,
-            'blueprint' => $blueprint->toPublishArray(),
-            'values' => $fields->values(),
-            'meta' => $fields->meta(),
-            'title' => $submission->date()->format('M j, Y @ H:i'),
-        ]);
-    }
-
-    public function index(Form $form)
+    public function __invoke(Form $form)
     {
         $paths = Storage::files("spam/{$form->handle()}");
 

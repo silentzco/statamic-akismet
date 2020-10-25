@@ -83,14 +83,13 @@ export default {
         return {
             listingKey: 'submissions',
             preferencesPrefix: `forms.${this.form}`,
-            requestUrl: cp_url(`akismet/queues/${this.form}/submissions`),
+            requestUrl: cp_url(`akismet/api/queues/${this.form}/spam`),
         }
     },
     methods: {
         submissionUrl(submission) {
-            return cp_url(`akismet/queues/${this.form}/submissions/${submission.id}`);
+            return cp_url(`akismet/queues/${this.form}/spam/${submission.id}`);
         }
     }
-
 }
 </script>

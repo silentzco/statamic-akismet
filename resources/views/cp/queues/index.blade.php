@@ -17,7 +17,9 @@
                     <td>
                         <div class="flex items-center">
                             <div class="w-4 h-4 mr-2">@svg('drawer-file')</div>
-                            <a href="{{ cp_route('akismet.queues.show', ['form' => $queue['form']->handle()]) }}">{{ $queue['form']->title() }} ({{ $queue['spam'] }})</a>
+                            <a href="{{ cp_route('akismet.spam.index', ['form' => $queue['form']->handle()]) }}">
+                                {{ $queue['form']->title() }} ({{ $queue['spam'] }})
+                            </a>
                         </div>
                     </td>
         @if ($loop->last)
