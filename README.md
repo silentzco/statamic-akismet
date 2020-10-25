@@ -66,8 +66,10 @@ return [
         'other_form' => [],
     ],
 ];
-
 ```
+
+You can also update your settings from the config page:
+![Configuration](https://github.com/silentzco/statamic-akismet/blob/main/images/config.png?raw=true)
 
 ## Usage
 
@@ -77,13 +79,15 @@ If it is spam, it gets put into that form's spam queue.
 
 ![Spam Queues](https://github.com/silentzco/statamic-akismet/blob/main/images/menu.png?raw=true)
 
-From there you can discard (delete) it, or approve it. Approving it will put it back into the normal submissions and tell Akismet that it is not spam (to help with learning).
+From there you can delete it, or marke it ham (not spam). Marking it as ham it will put it back into the normal submissions and tell Akismet that it is not spam (to help with learning).
 
-![Approval/Discarding](https://github.com/silentzco/statamic-akismet/blob/main/images/approval-discarding.png?raw=true)
+![Mark as Ham](https://github.com/silentzco/statamic-akismet/blob/main/images/mark-as-ham.png?raw=true)
 
-If you find a submission that is spam, you can mark it as spam (image). This will put it in the spam queue and tell Akismet it is spam.
+If you find a submission that is spam, you can mark it as spam. This will put it in the spam queue and tell Akismet it is spam.
 
 ![Mark As Spam](https://github.com/silentzco/statamic-akismet/blob/main/images/mark-as-spam.png?raw=true)
+
+Both of those can be done one at a time, or in bulk via the bulk selection.
 
 ## Testing
 
