@@ -50,6 +50,13 @@ class ServiceProvider extends AddonServiceProvider
 
     private function bootNav()
     {
+        NavAPI::extend(function (Nav $nav) {
+            $nav->content('Config')
+                ->section('Akismet')
+                ->route('akismet.config.edit')
+                ->icon('settings-horizontal');
+        });
+
         $handles = array_keys(config('akismet.forms', []));
 
         if (! count($handles)) {
@@ -73,13 +80,6 @@ class ServiceProvider extends AddonServiceProvider
                     return [$title => cp_route('akismet.spam.index', ['form' => $form->handle()])];
                 })->filter()
                 ->all());
-        });
-
-        NavAPI::extend(function (Nav $nav) use ($handles) {
-            $nav->content('Config')
-                ->section('Akismet')
-                ->route('akismet.config.edit')
-                ->icon('settings-horizontal');
         });
     }
 
