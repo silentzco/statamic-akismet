@@ -30,7 +30,7 @@ AKISMET_API_KEY=your-key-here
 ```
 
 ### Permission
-In order to manage your spam, you'll either have to be super user or have the `manage spam` permission:
+In order to manage your spam, you'll either have to be a super user or have the `manage spam` permission:
 
 [![Permission](https://github.com/silentzco/statamic-akismet/blob/main/images/permission.png?raw=true)
 
@@ -79,7 +79,7 @@ If it is spam, it gets put into that form's spam queue.
 
 ![Spam Queues](https://github.com/silentzco/statamic-akismet/blob/main/images/menu.png?raw=true)
 
-From there you can delete it, or marke it ham (not spam). Marking it as ham it will put it back into the normal submissions and tell Akismet that it is not spam (to help with learning).
+From there you can delete it, or mark it ham (not spam). Marking it as ham it will put it back into the normal submissions and tell Akismet that it is not spam (to help with learning).
 
 ![Mark as Ham](https://github.com/silentzco/statamic-akismet/blob/main/images/mark-as-ham.png?raw=true)
 
