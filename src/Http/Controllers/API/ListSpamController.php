@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Statamic\Extensions\Pagination\LengthAwarePaginator;
 use Statamic\Facades\Config;
+use Statamic\Facades\Folder;
+use Statamic\Facades\YAML;
 use Statamic\Forms\Form;
 use Statamic\Forms\Submission as StatamicSubmission;
 use Statamic\Http\Controllers\CP\CpController;
@@ -15,13 +17,13 @@ class ListSpamController extends CpController
 {
     public function __invoke(Form $form)
     {
-        $paths = Storage::files("spam/{$form->handle()}");
+        $paths = Folder::disk(config('filesystems.default'))->getFilesByType("spam/{$form->handle()}", 'yaml');
 
         $submissions = collect($paths)->map(function ($path) use ($form) {
             return tap(new StatamicSubmission(), function ($submission) use ($path, $form) {
                 $submission->id(basename($path));
                 $submission->form($form);
-                $submission->data(unserialize(Storage::get($path)));
+                $submission->data(YAML::parse(Storage::get($path)));
             });
         });
 

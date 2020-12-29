@@ -7,6 +7,7 @@ use Statamic\Events\Event;
 use Statamic\Facades\Path;
 use Statamic\Facades\Site;
 use Statamic\Facades\URL;
+use Statamic\Facades\YAML;
 use Statamic\Forms\Form;
 use Statamic\Forms\Submission as StatamicSubmission;
 use Statamic\Support\Arr;
@@ -41,8 +42,8 @@ class Submission extends AbstractSpam
     public function addToQueue(): void
     {
         Storage::put(
-                Path::assemble('spam', $this->submission->form->handle(), $this->submission->id()),
-                serialize($this->submission->data())
+                Path::assemble('spam', $this->submission->form->handle(), $this->submission->id().'.yaml'),
+                YAML::dump($this->submission->data())
             );
     }
 
