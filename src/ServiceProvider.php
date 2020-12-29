@@ -2,9 +2,11 @@
 
 namespace Silentz\Akismet;
 
+use Edalzell\Forma\Forma;
 use Illuminate\Support\Facades\Storage;
 use Silentz\Akismet\Actions\MarkAsHam;
 use Silentz\Akismet\Actions\MarkAsSpam;
+use Silentz\Akismet\Http\Controllers\ConfigController;
 use Silentz\Akismet\Listeners\CheckForSpam;
 use Silentz\Akismet\Listeners\CheckSubmissionForSpam;
 use Statamic\CP\Navigation\Nav;
@@ -37,6 +39,10 @@ class ServiceProvider extends AddonServiceProvider
     {
         parent::boot();
 
+        $this->app->booted(function () {
+            Forma::add('silentz/akismet', ConfigController::class);
+        });
+
         $this->bootActions();
         $this->bootNav();
         $this->bootPermissions();
@@ -50,13 +56,6 @@ class ServiceProvider extends AddonServiceProvider
 
     private function bootNav()
     {
-        NavAPI::extend(function (Nav $nav) {
-            $nav->content('Config')
-                ->section('Akismet')
-                ->route('akismet.config.edit')
-                ->icon('settings-horizontal');
-        });
-
         $handles = array_keys(config('akismet.forms', []));
 
         if (! count($handles)) {
