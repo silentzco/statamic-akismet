@@ -8,9 +8,10 @@ forms:
     -
       handle: handle
       field:
-        input_type: text
-        display: Handle
-        type: text
+        display: Form
+        type: form
+        max_items: 1
+        mode: select
         width: 33
     -
       handle: name_field
@@ -47,7 +48,7 @@ forms:
         display: 'Content Field'
         type: text
         width: 33
-  mode: table
+  mode: stacked
   reorderable: false
   display: Forms
   type: grid
