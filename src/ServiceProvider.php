@@ -6,6 +6,8 @@ use Edalzell\Forma\Forma;
 use Illuminate\Support\Facades\Storage;
 use Silentz\Akismet\Actions\MarkAsHam;
 use Silentz\Akismet\Actions\MarkAsSpam;
+use Silentz\Akismet\Commands\AddExtension;
+use Silentz\Akismet\Commands\Convert;
 use Silentz\Akismet\Http\Controllers\ConfigController;
 use Silentz\Akismet\Listeners\CheckForSpam;
 use Silentz\Akismet\Listeners\CheckSubmissionForSpam;
@@ -21,6 +23,11 @@ use Statamic\Providers\AddonServiceProvider;
 class ServiceProvider extends AddonServiceProvider
 {
     protected $publishAfterInstall = true;
+
+    protected $commands = [
+        AddExtension::class,
+        Convert::class,
+    ];
 
     protected $listen = [
         // UserRegistering::class => [CheckForSpam::class],
