@@ -42,7 +42,7 @@ class MarkAsHam extends Action
             $spam->delete();
             $spam->submitHam();
 
-            $spam->submission()->save();
+            $spam->addToSubmissions();
         });
     }
 }
