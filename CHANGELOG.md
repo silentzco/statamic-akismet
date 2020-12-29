@@ -6,7 +6,7 @@ All notable changes to `statamic-akismet` will be documented in this file.
 
 - can now delete spam
 - add spam count to nav
-- use Form for CP config
+- use Forma for CP config
 - form selector in config
 - spam now stored same as submissions, for easy reading
 - migration for older spam formats
