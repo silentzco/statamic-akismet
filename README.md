@@ -1,4 +1,4 @@
-# Use Akismet to stop spam
+# Use Akismet to Stop Spam
 [![Latest Version](https://img.shields.io/github/release/silentzco/statamic-akismet)](https://github.com/silentzco/statamic-akismet/releases)
 [![Commercial License](https://img.shields.io/badge/license-Commercial-success?style=flat-square)](#)
 
@@ -20,6 +20,17 @@ composer require silentz/akismet
 
 The package will automatically register itself.
 
+## Migration from < 3+
+
+Previous versions of Akismet stored the spam in a serialized file. Version 3 stores it in the same format as Statamic form submissions. The previous spam needs to be converted to the new format/naming. To do so, run two commmands:
+
+```
+php artisan spam:convert
+php artisan spam:add-extension
+```
+
+Those two commands will unserialize the data and add the correct extension (`.yaml`) to any spam that needs it.
+
 ## Configuration
 
 ### .env
@@ -35,7 +46,7 @@ In order to manage your spam, you'll either have to be a super user or have the 
 [![Permission](https://github.com/silentzco/statamic-akismet/blob/main/images/permission.png?raw=true)
 
 ### Settings
-To publish the config file to `config/akismet.php` run:
+Publish the config:
 
 ```bash
 php artisan vendor:publish --tag="akismet-config"
@@ -60,6 +71,8 @@ return [
             // use `first_name_field` & `last_name_field` if you store them separately
             'first_name_field' => 'first_name',
             'last_name_field' => 'last_name',
+
+            // field in the form for email and content
             'email_field' => 'email',
             'content_field' => 'message',
         ],
@@ -88,6 +101,10 @@ If you find a submission that is spam, you can mark it as spam. This will put it
 ![Mark As Spam](https://github.com/silentzco/statamic-akismet/blob/main/images/mark-as-spam.png?raw=true)
 
 Both of those can be done one at a time, or in bulk via the bulk selection.
+
+## Testing Akismet Locally
+
+To confirm Akismet is working, use either `akismet-guaranteed-spam@example.com` as the email on a test submission, or `viagra-test-123` as the name. Submissions with that in it will always be flagged as spam.
 
 ## Testing
 
