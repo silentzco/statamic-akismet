@@ -3,7 +3,7 @@
     "type": "statamic-addon",
     "license": "proprietary",
     "require": {
-        "php": "^7.4",
+        "php": "^7.4 || ^8.0",
         "edalzell/forma": "^0.8",
         "laravel/framework": "^7.0 || ^8.0",
         "nickurt/laravel-akismet": "^1.8",
