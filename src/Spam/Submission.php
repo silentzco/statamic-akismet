@@ -27,7 +27,7 @@ class Submission extends AbstractSpam
         $submission = $form
             ->makeSubmission()
             ->id($id)
-            ->data(unserialize(Storage::get(Path::assemble('spam', $form->handle(), $id))));
+            ->data(Storage::get(Path::assemble('spam', $form->handle(), $id)));
 
         return new self($submission);
     }
