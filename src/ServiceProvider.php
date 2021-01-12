@@ -24,6 +24,11 @@ class ServiceProvider extends AddonServiceProvider
 {
     protected $publishAfterInstall = true;
 
+    protected $actions = [
+        MarkAsSpam::class,
+        MarkAsHam::class,
+    ];
+
     protected $commands = [
         AddExtension::class,
         Convert::class,
@@ -50,15 +55,8 @@ class ServiceProvider extends AddonServiceProvider
             Forma::add('silentz/akismet', ConfigController::class);
         });
 
-        $this->bootActions();
         $this->bootNav();
         $this->bootPermissions();
-    }
-
-    private function bootActions()
-    {
-        MarkAsSpam::register();
-        MarkAsHam::register();
     }
 
     private function bootNav()
