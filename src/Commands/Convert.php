@@ -2,11 +2,11 @@
 
 namespace Silentz\Akismet\Commands;
 
-use ErrorException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Statamic\Facades\Folder;
 use Statamic\Facades\YAML;
+use Statamic\Support\Str;
 
 class Convert extends Command
 {
@@ -25,11 +25,15 @@ class Convert extends Command
 
     private function convert($path)
     {
-        try {
-            if ($data = unserialize(Storage::get($path))) {
-                Storage::put($path, YAML::dump(array_filter($data)));
-            }
-        } catch (ErrorException $e) {
+        $raw = Storage::get($path);
+
+        if (Str::of($raw)->startsWith('a:')) {
+            Storage::put($path, YAML::dump(array_filter(unserialize($raw))));
+            $this->info('Converted '.$path);
+
+            return;
         }
+
+        $this->info("Didn't need to convert {$path}");
     }
 }
