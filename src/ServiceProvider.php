@@ -51,9 +51,7 @@ class ServiceProvider extends AddonServiceProvider
     {
         parent::boot();
 
-        $this->app->booted(function () {
-            Forma::add('silentz/akismet', ConfigController::class);
-        });
+        Forma::add('silentz/akismet', ConfigController::class);
 
         $this->bootNav();
         $this->bootPermissions();
