@@ -21,7 +21,7 @@ class ListSpamController extends CpController
 
         $submissions = collect($paths)->map(function ($path) use ($form) {
             return tap(new StatamicSubmission(), function ($submission) use ($path, $form) {
-                $submission->id(basename($path));
+                $submission->id(basename($path, '.yaml'));
                 $submission->form($form);
                 $submission->data(YAML::parse(Storage::get($path)));
             });

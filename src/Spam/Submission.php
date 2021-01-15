@@ -27,7 +27,7 @@ class Submission extends AbstractSpam
         $submission = $form
             ->makeSubmission()
             ->id($id)
-            ->data(Storage::get(Path::assemble('spam', $form->handle(), $id)));
+            ->data(YAML::parse(Storage::get(Path::assemble('spam', $form->handle(), $id.'.yaml'))));
 
         return new self($submission);
     }
