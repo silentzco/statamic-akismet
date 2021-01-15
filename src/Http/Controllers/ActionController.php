@@ -16,6 +16,6 @@ class ActionController extends StatamicActionController
 
         return $ids->map(fn ($id) => new Submission($form->makeSubmission()
                 ->id($id)
-                ->data(unserialize(Storage::get(Path::assemble('spam', $form->handle(), $id))))));
+                ->data(Storage::get(Path::assemble('spam', $form->handle(), $id)))));
     }
 }
