@@ -5,7 +5,6 @@ use Silentz\Akismet\Http\Controllers\ActionController;
 use Silentz\Akismet\Http\Controllers\API\ListSpamController as ListSpamApiController;
 use Silentz\Akismet\Http\Controllers\Ham\StoreHamController;
 use Silentz\Akismet\Http\Controllers\ShowQueuesController;
-use Silentz\Akismet\Http\Controllers\Spam\DestroySpamController;
 use Silentz\Akismet\Http\Controllers\Spam\ListSpamController;
 use Silentz\Akismet\Http\Controllers\Spam\ShowSpamController;
 
@@ -27,7 +26,6 @@ Route::name('akismet.')->prefix('akismet')->group(function () {
         Route::name('spam.')->prefix('{form}/spam')->group(function () {
             Route::get('/', [ListSpamController::class, '__invoke'])->name('index');
             Route::get('{id}', [ShowSpamController::class, '__invoke'])->name('show');
-            Route::delete('{id}', [DestroySpamController::class, '__invoke'])->name('destroy');
         });
 
         Route::name('queues.')->group(function () {
