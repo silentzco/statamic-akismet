@@ -27,9 +27,14 @@ class Submission extends AbstractSpam
         $submission = $form
             ->makeSubmission()
             ->id($id)
-            ->data(YAML::parse(Storage::get(Path::assemble('spam', $form->handle(), $id.'.yaml'))));
+            ->data(YAML::parse(Storage::get(self::path($form->handle(), $id))));
 
         return new self($submission);
+    }
+
+    public static function path($handle, $id): string
+    {
+        return Path::assemble('spam', $handle, $id.'.yaml');
     }
 
     public function __construct(StatamicSubmission $submission)
@@ -42,7 +47,7 @@ class Submission extends AbstractSpam
     public function addToQueue(): void
     {
         Storage::put(
-                Path::assemble('spam', $this->submission->form->handle(), $this->submission->id().'.yaml'),
+                self::path($this->submission->form->handle(), $this->submission->id()),
                 YAML::dump($this->submission->data())
             );
     }
@@ -54,7 +59,7 @@ class Submission extends AbstractSpam
 
     public function delete(): void
     {
-        Storage::delete(Path::assemble('spam', $this->submission->form()->handle(), $this->submission->id()));
+        Storage::delete(self::path($this->submission->form()->handle(), $this->submission->id()));
     }
 
     public function submission(): StatamicSubmission
