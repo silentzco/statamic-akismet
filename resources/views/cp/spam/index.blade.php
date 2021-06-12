@@ -26,7 +26,7 @@
     >
         <div slot="no-results" class="text-center border-2 border-dashed rounded-lg">
             <div class="max-w-md px-4 py-8 mx-auto">
-                @svg('empty/form')
+                @cp_svg('empty/form')
                 <h1 class="my-3">{{ __('No spam') }}</h1>
             </div>
         </div>
