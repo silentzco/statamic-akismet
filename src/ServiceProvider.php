@@ -4,12 +4,12 @@ namespace Silentz\Akismet;
 
 use Edalzell\Forma\Forma;
 use Illuminate\Support\Facades\Storage;
+use Silentz\Akismet\Actions\DeleteSpam;
 use Silentz\Akismet\Actions\MarkAsHam;
 use Silentz\Akismet\Actions\MarkAsSpam;
 use Silentz\Akismet\Commands\AddExtension;
 use Silentz\Akismet\Commands\Convert;
 use Silentz\Akismet\Http\Controllers\ConfigController;
-use Silentz\Akismet\Listeners\CheckForSpam;
 use Silentz\Akismet\Listeners\CheckSubmissionForSpam;
 use Statamic\CP\Navigation\Nav;
 use Statamic\Events\FormSubmitted;
@@ -17,7 +17,6 @@ use Statamic\Facades\CP\Nav as NavAPI;
 use Statamic\Facades\Form as FormAPI;
 use Statamic\Facades\Path;
 use Statamic\Facades\Permission;
-use Statamic\Forms\Form;
 use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
@@ -25,6 +24,7 @@ class ServiceProvider extends AddonServiceProvider
     protected $publishAfterInstall = true;
 
     protected $actions = [
+        DeleteSpam::class,
         MarkAsSpam::class,
         MarkAsHam::class,
     ];

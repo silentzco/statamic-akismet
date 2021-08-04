@@ -84,6 +84,8 @@ export default {
             listingKey: 'submissions',
             preferencesPrefix: `forms.${this.form}`,
             requestUrl: cp_url(`akismet/api/queues/${this.form}/spam`),
+            bulkActionsUrl: cp_url(`akismet/queues/${this.form}/spam/actions`),
+            runActionUrl: cp_url(`akismet/queues/${this.form}/spam/actions`)
         }
     },
     methods: {

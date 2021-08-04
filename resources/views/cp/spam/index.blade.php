@@ -18,8 +18,7 @@
 
     <spam-listing
         form="{{ $form->handle() }}"
-        run-action-url="{{ cp_route('akismet.actions.run', $form->handle()) }}"
-        bulk-actions-url="{{ cp_route('akismet.actions.bulk', $form->handle()) }}"
+        action-url="{{ cp_route('akismet.actions.run', $form->handle()) }}"
         initial-sort-column="datestamp"
         initial-sort-direction="desc"
         v-cloak

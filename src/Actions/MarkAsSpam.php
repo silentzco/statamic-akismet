@@ -2,7 +2,8 @@
 
 namespace Silentz\Akismet\Actions;
 
-use Silentz\Akismet\Spam\Submission as SubmissionSpam;
+use Illuminate\Support\Collection;
+use Silentz\Akismet\Spam\Submission as Spam;
 use Statamic\Actions\Action;
 use Statamic\Forms\Submission;
 
@@ -27,25 +28,23 @@ class MarkAsSpam extends Action
         return 'Are you sure this submission is spam?|Are you sure these :count submissions are spam?';
     }
 
+    /**
+     * @param Submission $item
+     * @return bool
+     */
     public function visibleTo($item)
     {
-        return $item instanceof Submission && ! request()->routeIs('statamic.cp.akismet.api.index');
+        return $item instanceof Submission &&
+            request()->routeIs(['statamic.cp.forms.submissions.index', 'statamic.cp.forms.submissions.actions.bulk']);
     }
 
     /**
-     * @param \Illuminate\Support\Collection $submissions
+     * @param Collection $submissions
      * @param array $values
      * @return void
      */
     public function run($submissions, $values)
     {
-        $submissions->each(function (Submission $submission) {
-            $spam = new SubmissionSpam($submission);
-
-            $spam->addToQueue();
-            $spam->submitSpam();
-
-            $submission->delete();
-        });
+        $submissions->mapInto(Spam::class)->each->makeSpam();
     }
 }

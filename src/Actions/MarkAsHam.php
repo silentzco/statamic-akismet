@@ -2,8 +2,10 @@
 
 namespace Silentz\Akismet\Actions;
 
-use Silentz\Akismet\Spam\Submission as SubmissionSpam;
+use Illuminate\Support\Collection;
+use Silentz\Akismet\Spam\Submission as Spam;
 use Statamic\Actions\Action;
+use Statamic\Forms\Submission;
 
 class MarkAsHam extends Action
 {
@@ -28,21 +30,16 @@ class MarkAsHam extends Action
 
     public function visibleTo($item)
     {
-        return $item instanceof SubmissionSpam || request()->routeIs('statamic.cp.akismet.api.index');
+        return $item instanceof Submission && request()->routeIs(['statamic.cp.akismet.api.index', 'statamic.cp.akismet.actions.bulk']);
     }
 
     /**
-     * @param \Illuminate\Support\Collection $submissions
+     * @param Collection $submissions
      * @param array $values
      * @return void
      */
     public function run($submissions, $values)
     {
-        $submissions->each(function (SubmissionSpam $spam) {
-            $spam->delete();
-            $spam->submitHam();
-
-            $spam->addToSubmissions();
-        });
+        $submissions->mapInto(Spam::class)->each->makeHam();
     }
 }

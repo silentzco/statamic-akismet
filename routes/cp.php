@@ -14,9 +14,9 @@ Route::name('akismet.')->prefix('akismet')->group(function () {
     });
 
     Route::prefix('queues')->group(function () {
-        Route::name('actions.')->prefix('{form}/spam')->group(function () {
-            Route::post('actions', [ActionController::class, 'run'])->name('run');
-            Route::get('actions', [ActionController::class, 'bulkActions'])->name('bulk');
+        Route::name('actions.')->prefix('{form}/spam/actions')->group(function () {
+            Route::post('/', [ActionController::class, 'run'])->name('run');
+            Route::post('list', [ActionController::class, 'bulkActions'])->name('bulk');
         });
 
         Route::name('ham.')->prefix('{form}/ham')->group(function () {

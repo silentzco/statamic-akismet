@@ -44,6 +44,21 @@ class Submission extends AbstractSpam
         $this->submission = $submission;
     }
 
+    public function makeHam(): void {
+        $this->delete();
+        $this->submitHam();
+
+        $this->addToSubmissions();
+    }
+
+    public function makeSpam(): void
+    {
+        $this->addToQueue();
+        $this->submitSpam();
+
+        $this->submission()->delete();
+    }
+
     public function addToQueue(): void
     {
         Storage::put(
