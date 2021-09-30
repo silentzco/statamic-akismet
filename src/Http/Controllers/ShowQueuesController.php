@@ -12,8 +12,9 @@ class ShowQueuesController extends Controller
     public function __invoke()
     {
         $spamQueues = collect(Storage::directories('spam'))
-            ->map(fn ($path) => [
-                    'form' => Form::find(Str::removeLeft($path, 'spam'.DIRECTORY_SEPARATOR)),
+            ->map(
+                fn ($path) => [
+                    'form' => Form::find(Str::removeLeft($path, 'spam/')),
                     'spam' => count(Storage::files($path)),
                 ]
             )->filter(fn ($queue) => $queue['spam']);
