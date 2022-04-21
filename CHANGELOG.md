@@ -2,6 +2,10 @@
 
 All notable changes to `statamic-akismet` will be documented in this file.
 
+## 3.1.1 - 2022-04-20
+
+- Fix package dependency required for L9 support
+
 ## 3.1 - 2022-04-20
 
 - Support Laravel 9 (#39)
