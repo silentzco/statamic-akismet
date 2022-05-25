@@ -2,6 +2,10 @@
 
 All notable changes to `statamic-akismet` will be documented in this file.
 
+## 3.1.2 - 2022-05-25
+
+- Fix viewing of spam
+
 ## 3.1.1 - 2022-04-21
 
 - Fix package dependency required for L9 support
