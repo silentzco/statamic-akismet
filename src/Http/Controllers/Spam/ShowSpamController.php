@@ -15,7 +15,8 @@ class ShowSpamController extends CpController
         }
 
         $blueprint = $submission->blueprint();
-        $fields = $blueprint->fields()->addValues($submission->data())->preProcess();
+
+        $fields = $blueprint->fields()->addValues(collect($submission->data())->all())->preProcess();
 
         return view('akismet::cp.spam.show', [
             'form' => $form,
