@@ -62,9 +62,9 @@ class Submission extends AbstractSpam
     public function addToQueue(): void
     {
         Storage::put(
-                self::path($this->submission->form->handle(), $this->submission->id()),
-                YAML::dump($this->submission->data())
-            );
+            self::path($this->submission->form->handle(), $this->submission->id()),
+            YAML::dump(collect($this->submission->data())->all())
+        );
     }
 
     public function addToSubmissions(): void
