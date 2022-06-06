@@ -2,6 +2,10 @@
 
 All notable changes to `statamic-akismet` will be documented in this file.
 
+## 3.1.3 - 2022-06-05
+
+- Fix submission data
+
 ## 3.1.2 - 2022-05-25
 
 - Fix viewing of spam
