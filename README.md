@@ -6,9 +6,9 @@ This package provides an easy way stop submission spam via Akismet.
 
 ## Requirements
 
-* PHP 7.4+
-* Statamic v3
-* Laravel 7+
+* PHP 8.2+
+* Statamic v4
+* Laravel 9+
 
 ## Installation
 
