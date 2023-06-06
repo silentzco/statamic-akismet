@@ -2,6 +2,12 @@
 
 All notable changes to `statamic-akismet` will be documented in this file.
 
+## v4.0.1 - 2023-06-06
+
+### 🐛 Fixed
+
+- Use Vite [@edalzell](https://github.com/edalzell) (#46)
+
 ## v4.0.0 - 2023-06-06
 
 - Support Statamic v4 [@edalzell](https://github.com/edalzell) (#43)
