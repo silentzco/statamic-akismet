@@ -1,6 +1,6 @@
 /mix-manifest.json
 /node_modules
-/yarn.lock
+/package-lock.json
 /vendor
 /.phpunit.result.cache
 /composer.lock

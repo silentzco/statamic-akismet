@@ -43,8 +43,10 @@ class ServiceProvider extends AddonServiceProvider
         'cp' => __DIR__.'/../routes/cp.php',
     ];
 
-    protected $scripts = [
-        __DIR__.'/../dist/js/cp.js',
+    protected $vite = [
+        'input' => ['resources/js/cp.js'],
+        'publicDirectory' => 'dist',
+        'hotFile' => __DIR__.'/../dist/hot',
     ];
 
     public function boot()
@@ -81,7 +83,7 @@ class ServiceProvider extends AddonServiceProvider
 
                     return [$title => cp_route('akismet.spam.index', ['form' => $form->handle()])];
                 })->filter()
-                ->all());
+                    ->all());
         });
     }
 
