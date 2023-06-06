@@ -2,6 +2,18 @@
 
 All notable changes to `statamic-akismet` will be documented in this file.
 
+## v4.0.0 - 2023-06-06
+
+- Support Statamic v4 [@edalzell](https://github.com/edalzell) (#43)
+
+### 🐛 Fixed
+
+- Remove not needed action [@edalzell](https://github.com/edalzell) (#45)
+
+### 🔧 Improved
+
+- 🔄 synced file(s) with edalzell/.github [@edalzell](https://github.com/edalzell) (#44)
+
 ## 3.1.3 - 2022-06-05
 
 - Fix submission data
@@ -72,7 +84,7 @@ All notable changes to `statamic-akismet` will be documented in this file.
 - CP config
 - better spam listing
 - search spam
--
+- 
 
 ## 2.1.0 - 2020-09-16
 
