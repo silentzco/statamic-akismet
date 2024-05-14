@@ -2,6 +2,12 @@
 
 All notable changes to `statamic-akismet` will be documented in this file.
 
+## v5.0 - 2024-05-14
+
+### 🚀 New
+
+- Support Statamic 5 & Laravel 11 [@edalzell](https://github.com/edalzell) (#50)
+
 ## v4.0.1 - 2023-06-06
 
 ### 🐛 Fixed
