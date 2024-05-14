@@ -2,6 +2,7 @@
 
 namespace Silentz\Akismet\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Test;
 use Silentz\Akismet\Tests\TestCase;
 use Statamic\Events\FormSubmitted;
 use Statamic\Facades\Form as FormAPI;
@@ -13,6 +14,7 @@ use Statamic\Forms\Submission;
 class SpamTest extends TestCase
 {
     private Form $form;
+
     private Submission $submission;
 
     public function setUp(): void
@@ -34,14 +36,14 @@ class SpamTest extends TestCase
 
         $this->submission = $this->form->makeSubmission()->data(
             [
-                'name'=>'viagra-test-123',
+                'name' => 'viagra-test-123',
                 'email' => 'akismet-guaranteed-spam@example.com',
                 'message' => '',
             ]
         );
     }
 
-    /** @test */
+    #[Test]
     public function can_detect_spam()
     {
         config([
@@ -57,7 +59,7 @@ class SpamTest extends TestCase
         $this->assertFalse(FormSubmitted::dispatch($this->submission));
     }
 
-    /** @test */
+    #[Test]
     public function can_detect_spam_with_only_email()
     {
         config([
