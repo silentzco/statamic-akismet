@@ -9,7 +9,9 @@ permissions:
 jobs:
   update_release_draft:
     if: github.event.pull_request.merged == true
-    permissions: write-all
+    permissions:
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - uses: release-drafter/release-drafter@v5
