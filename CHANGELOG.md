@@ -2,6 +2,16 @@
 
 All notable changes to `statamic-akismet` will be documented in this file.
 
+## v5.1 - 2025-03-24
+
+### 🚀 New
+
+- Laravel 12 support [@duncanmcclean](https://github.com/duncanmcclean) (#53)
+
+### 🧰 Maintenance
+
+- Better permissions [@edalzell](https://github.com/edalzell) (#54)
+
 ## v5.0 - 2024-05-14
 
 ### 🚀 New
