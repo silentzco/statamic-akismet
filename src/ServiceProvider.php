@@ -2,14 +2,12 @@
 
 namespace Silentz\Akismet;
 
-use Edalzell\Forma\Forma;
 use Illuminate\Support\Facades\Storage;
 use Silentz\Akismet\Actions\DeleteSpam;
 use Silentz\Akismet\Actions\MarkAsHam;
 use Silentz\Akismet\Actions\MarkAsSpam;
 use Silentz\Akismet\Commands\AddExtension;
 use Silentz\Akismet\Commands\Convert;
-use Silentz\Akismet\Http\Controllers\ConfigController;
 use Silentz\Akismet\Listeners\CheckSubmissionForSpam;
 use Statamic\CP\Navigation\Nav;
 use Statamic\Events\FormSubmitted;
@@ -44,16 +42,18 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $vite = [
-        'input' => ['resources/js/cp.js'],
+        'input' => [
+            'resources/js/cp.js',
+            'resources/js/cp.css',
+        ],
         'publicDirectory' => 'dist',
-        'hotFile' => __DIR__.'/../dist/hot',
     ];
 
     public function boot()
     {
         parent::boot();
 
-        Forma::add('silentz/akismet', ConfigController::class);
+        // Forma::add('silentz/akismet', ConfigController::class);
 
         $this->bootNav();
         $this->bootPermissions();
