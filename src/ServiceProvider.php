@@ -2,6 +2,8 @@
 
 namespace Silentz\Akismet;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Silentz\Akismet\Actions\DeleteSpam;
 use Silentz\Akismet\Actions\MarkAsHam;
@@ -9,12 +11,14 @@ use Silentz\Akismet\Actions\MarkAsSpam;
 use Silentz\Akismet\Commands\AddExtension;
 use Silentz\Akismet\Commands\Convert;
 use Silentz\Akismet\Listeners\CheckSubmissionForSpam;
+use Statamic\Addons\Addon;
 use Statamic\CP\Navigation\Nav;
 use Statamic\Events\FormSubmitted;
-use Statamic\Facades\CP\Nav as NavAPI;
-use Statamic\Facades\Form as FormAPI;
+use Statamic\Facades\CP\Nav as NavFacade;
+use Statamic\Facades\Form as FormFacade;
 use Statamic\Facades\Path;
 use Statamic\Facades\Permission;
+use Statamic\Forms\Form;
 use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
@@ -37,10 +41,6 @@ class ServiceProvider extends AddonServiceProvider
         FormSubmitted::class => [CheckSubmissionForSpam::class],
     ];
 
-    protected $routes = [
-        'cp' => __DIR__.'/../routes/cp.php',
-    ];
-
     protected $vite = [
         'input' => [
             'resources/js/cp.js',
@@ -49,48 +49,49 @@ class ServiceProvider extends AddonServiceProvider
         'publicDirectory' => 'resources/dist',
     ];
 
-    public function boot()
+    public function bootAddon()
     {
-        parent::boot();
-
-        // Forma::add('silentz/akismet', ConfigController::class);
-
-        $this->bootNav();
-        $this->bootPermissions();
+        $this->bootNav()->bootPermissions();
     }
 
-    private function bootNav()
+    private function bootNav(): self
     {
-        $handles = array_keys(config('akismet.forms', []));
+        $forms = collect(Arr::pluck($this->getAddon()->setting('forms', []), 'form'))
+            ->map(fn(string $handle) => FormFacade::find($handle))
+            ->filter();
 
-        if (! count($handles)) {
-            return;
-        }
+        NavFacade::extend(fn (Nav $nav) => $nav
+            ->content('Spam Queue')
+            ->section('Akismet')
+            ->route('akismet.queues.index')
+            ->icon('shield-key')
+            ->can('manage spam')
+            ->children($this->menuItems($forms))
+        );
 
-        NavAPI::extend(function (Nav $nav) use ($handles) {
-            $nav->content('Spam Queue')
-                ->section('Akismet')
-                ->route('akismet.queues.index')
-                ->icon('shield-key')
-                ->can('manage spam')
-                ->children(collect($handles)->flatMap(function (string $handle) {
-                    /* @var Form */
-                    if (! $form = FormAPI::find($handle)) {
-                        return;
-                    }
-
-                    $title = $form->title().' ('.count(Storage::files(Path::assemble('spam', $form->handle()))).')';
-
-                    return [$title => cp_route('akismet.spam.index', ['form' => $form->handle()])];
-                })->filter()
-                    ->all());
-        });
+        return $this;
     }
 
-    private function bootPermissions()
+    private function bootPermissions(): self
     {
         Permission::group('forms', function () {
             Permission::register('manage spam')->label('Manage Spam');
         });
+
+        return $this;
+    }
+
+    private function menuItems(Collection $forms): array {
+        return $forms->flatMap(fn (Form $form) => [
+            $this->menuTitle($form) => $this->spamQueueRoute($form->handle())
+        ])->all();
+    }
+
+    private function menuTitle(Form $form): string {
+        return $form->title().' ('.count(Storage::files(Path::assemble('spam', $form->handle()))).')';
+    }
+
+    private function spamQueueRoute(string $formHandle): string {
+        return cp_route('akismet.spam.index', ['form' => $formHandle]);
     }
 }
