@@ -37,14 +37,14 @@ class ServiceProvider extends AddonServiceProvider
     private function bootNav(): self
     {
         $forms = collect(Arr::pluck($this->getAddon()->setting('forms', []), 'form'))
-            ->map(fn(string $handle) => FormFacade::find($handle))
+            ->map(fn (string $handle) => FormFacade::find($handle))
             ->filter();
 
         NavFacade::extend(fn (Nav $nav) => $nav
             ->content('Spam Queue')
             ->section('Akismet')
             ->route('akismet.queues.index')
-            ->icon('shield-key')
+            ->icon('warning-diamond')
             ->can('manage spam')
             ->children($this->menuItems($forms))
         );
@@ -61,17 +61,20 @@ class ServiceProvider extends AddonServiceProvider
         return $this;
     }
 
-    private function menuItems(Collection $forms): array {
+    private function menuItems(Collection $forms): array
+    {
         return $forms->flatMap(fn (Form $form) => [
-            $this->menuTitle($form) => $this->spamQueueRoute($form->handle())
+            $this->menuTitle($form) => $this->spamQueueRoute($form->handle()),
         ])->all();
     }
 
-    private function menuTitle(Form $form): string {
+    private function menuTitle(Form $form): string
+    {
         return $form->title().' ('.count(Storage::files(Path::assemble('spam', $form->handle()))).')';
     }
 
-    private function spamQueueRoute(string $formHandle): string {
+    private function spamQueueRoute(string $formHandle): string
+    {
         return cp_route('akismet.spam.index', ['form' => $formHandle]);
     }
 }
