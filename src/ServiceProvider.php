@@ -4,13 +4,11 @@ namespace Silentz\Akismet;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 use Silentz\Akismet\Listeners\CheckSubmissionForSpam;
 use Statamic\CP\Navigation\Nav;
 use Statamic\Events\FormSubmitted;
 use Statamic\Facades\CP\Nav as NavFacade;
 use Statamic\Facades\Form as FormFacade;
-use Statamic\Facades\Path;
 use Statamic\Facades\Permission;
 use Statamic\Forms\Form;
 use Statamic\Providers\AddonServiceProvider;
@@ -64,17 +62,7 @@ class ServiceProvider extends AddonServiceProvider
     private function menuItems(Collection $forms): array
     {
         return $forms->flatMap(fn (Form $form) => [
-            $this->menuTitle($form) => $this->spamQueueRoute($form->handle()),
+            $form->title() => cp_route('akismet.spam.index', ['form' => $form->handle()]),
         ])->all();
-    }
-
-    private function menuTitle(Form $form): string
-    {
-        return $form->title().' ('.count(Storage::files(Path::assemble('spam', $form->handle()))).')';
-    }
-
-    private function spamQueueRoute(string $formHandle): string
-    {
-        return cp_route('akismet.spam.index', ['form' => $formHandle]);
     }
 }
