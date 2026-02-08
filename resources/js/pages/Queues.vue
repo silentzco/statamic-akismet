@@ -1,7 +1,6 @@
 <script setup>
-import { Head } from '@statamic/cms/inertia';
+import { Head, Link } from '@statamic/cms/inertia';
 import { Badge, Heading, Listing } from '@statamic/cms/ui';
-import { Link } from '@statamic/cms/inertia';
 
 const props = defineProps({
     queues: { type: Array, required: true },
