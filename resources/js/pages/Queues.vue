@@ -1,6 +1,7 @@
 <script setup>
 import { Head } from '@statamic/cms/inertia';
 import { Badge, Heading, Listing } from '@statamic/cms/ui';
+import { Link } from '@statamic/cms/inertia';
 
 const props = defineProps({
     queues: { type: Array, required: true },
@@ -24,7 +25,7 @@ const props = defineProps({
                 :sortable="false"
             >
                 <template #cell-title="{ row, value }">
-                    <a :href="row.link" v-html="value" />
+                    <Link :href="row.link" v-html="value" />
                 </template>
                 <template #cell-count="{ row, value }">
                     <Badge color="red" :text="value" pill />
