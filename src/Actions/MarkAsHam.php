@@ -11,9 +11,11 @@ class MarkAsHam extends Action
 {
     protected $dangerous = true;
 
+    protected $icon = 'mail-check';
+
     public function authorize($user, $item)
     {
-        return$user->can('manage spam', $item);
+        return $user->can('manage spam', $item);
     }
 
     public function buttonText()
@@ -34,8 +36,8 @@ class MarkAsHam extends Action
     }
 
     /**
-     * @param Collection $submissions
-     * @param array $values
+     * @param  Collection  $submissions
+     * @param  array  $values
      * @return void
      */
     public function run($submissions, $values)

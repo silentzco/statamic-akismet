@@ -5,7 +5,7 @@ tabs:
           fields:
             - handle: forms
               field:
-                mode: stacked
+                mode: table
                 reorderable: false
                 display: Forms
                 type: grid

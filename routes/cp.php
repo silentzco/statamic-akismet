@@ -10,7 +10,7 @@ use Silentz\Akismet\Http\Controllers\Spam\ShowSpamController;
 
 Route::name('akismet.')->prefix('akismet')->group(function () {
     Route::name('api.')->prefix('/api/queues/{form}/spam')->group(function () {
-        Route::get('/', [ListSpamAPIController::class, '__invoke'])->name('index');
+        Route::get('/', ListSpamAPIController::class)->name('index');
     });
 
     Route::prefix('queues')->group(function () {
@@ -24,12 +24,12 @@ Route::name('akismet.')->prefix('akismet')->group(function () {
         });
 
         Route::name('spam.')->prefix('{form}/spam')->group(function () {
-            Route::get('/', [ListSpamController::class, '__invoke'])->name('index');
+            Route::get('/', ListSpamController::class)->name('index');
             Route::get('{id}', [ShowSpamController::class, '__invoke'])->name('show');
         });
 
         Route::name('queues.')->group(function () {
-            Route::get('/', [ShowQueuesController::class, '__invoke'])->name('index');
+            Route::get('/', ShowQueuesController::class)->name('index');
         });
     });
 });
