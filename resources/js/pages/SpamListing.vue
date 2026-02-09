@@ -28,6 +28,6 @@ const requestUrl = cp_url(`akismet/api/queues/${props.form}/spam`);
 const runActionUrl = cp_url(`akismet/queues/${props.form}/spam/actions`);
 
 function submissionUrl(submission) {
-    return cp_url(`akismet/queues/${props.form}/spam/${submission.id}`);
+    return cp_url(`akismet/queues/${props.form}/spam/${submission}`);
 }
 </script>

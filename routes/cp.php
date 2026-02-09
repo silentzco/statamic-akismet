@@ -25,7 +25,7 @@ Route::name('akismet.')->prefix('akismet')->group(function () {
 
         Route::name('spam.')->prefix('{form}/spam')->group(function () {
             Route::get('/', ListSpamController::class)->name('index');
-            Route::get('{id}', [ShowSpamController::class, '__invoke'])->name('show');
+            Route::get('{id}', ShowSpamController::class)->name('show');
         });
 
         Route::name('queues.')->group(function () {
