@@ -2,6 +2,12 @@
 
 All notable changes to `statamic-akismet` will be documented in this file.
 
+## v6.0.1 - 2026-02-10
+
+### 🚀 New
+
+- Statamic 6 Support [@edalzell](https://github.com/edalzell) (#56)
+
 ## v6.0 - 2026-02-10
 
 ### 🚀 New
