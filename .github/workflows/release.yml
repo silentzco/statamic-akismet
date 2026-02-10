@@ -25,13 +25,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: php-actions/composer@v6
+        with:
+            php_version: "8.3"
+
       - name: Install dependencies
         run: npm install
+
       - name: Compile assets
         run: npm run build
       - name: Create zip
         run: tar -czvf dist.tar.gz dist
+
       - name: Upload zip to release
         uses: actions/upload-release-asset@v1
         env:
@@ -47,19 +55,22 @@ jobs:
     needs: get_draft_release
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
       - name: Update Changelog
         id: update_changelog
         uses: stefanzweifel/changelog-updater-action@v1
         with:
           latest-version: ${{ needs.get_draft_release.outputs.release_tag }}
           release-notes: ${{ needs.get_draft_release.outputs.release_body }}
+
       - name: Commit updated CHANGELOG
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: main
           commit_message: Update CHANGELOG
           file_pattern: CHANGELOG.md
+
       - uses: eregon/publish-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
