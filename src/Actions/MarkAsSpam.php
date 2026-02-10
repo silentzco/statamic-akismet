@@ -13,7 +13,7 @@ class MarkAsSpam extends Action
 
     public function authorize($user, $item)
     {
-        return$user->can('manage spam', $item);
+        return $user->can('manage spam', $item);
     }
 
     public function buttonText()
@@ -28,8 +28,13 @@ class MarkAsSpam extends Action
         return 'Are you sure this submission is spam?|Are you sure these :count submissions are spam?';
     }
 
+    public function icon(): string
+    {
+        return file_get_contents(__DIR__.'/../../resources/svg/inbox-block.svg');
+    }
+
     /**
-     * @param Submission $item
+     * @param  Submission  $item
      * @return bool
      */
     public function visibleTo($item)
@@ -39,8 +44,8 @@ class MarkAsSpam extends Action
     }
 
     /**
-     * @param Collection $submissions
-     * @param array $values
+     * @param  Collection  $submissions
+     * @param  array  $values
      * @return void
      */
     public function run($submissions, $values)

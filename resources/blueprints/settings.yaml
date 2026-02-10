@@ -1,0 +1,55 @@
+tabs:
+  main:
+    sections:
+        -
+          fields:
+            - handle: forms
+              field:
+                mode: table
+                reorderable: false
+                display: Forms
+                type: grid
+                fields:
+                  -
+                    handle: form
+                    field:
+                      display: Form
+                      type: form
+                      max_items: 1
+                      mode: select
+                      width: 33
+                  -
+                    handle: name_field
+                    field:
+                      display: 'Name Field'
+                      input_type: text
+                      type: text
+                      width: 33
+                  -
+                    handle: first_name_field
+                    field:
+                      display: 'First Name Field'
+                      input_type: text
+                      type: text
+                      width: 33
+                  -
+                    handle: last_name_field
+                    field:
+                      display: 'Last Name Field'
+                      input_type: text
+                      type: text
+                      width: 33
+                  -
+                    handle: email_field
+                    field:
+                      display: 'Email Field'
+                      input_type: text
+                      type: text
+                      width: 33
+                  -
+                    handle: content_field
+                    field:
+                      input_type: text
+                      display: 'Content Field'
+                      type: text
+                      width: 33
