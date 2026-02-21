@@ -1,14 +1,12 @@
 <?php
 
-namespace Silentz\Akismet\Tests\Unit;
-
 use PHPUnit\Framework\Attributes\Test;
 use Silentz\Akismet\Tests\TestCase;
 use Statamic\Events\FormSubmitted;
 use Statamic\Facades\Form as FormAPI;
 use Statamic\Facades\YAML;
 use Statamic\Fields\Blueprint;
-use Statamic\Forms\Form as Form;
+use Statamic\Forms\Form;
 use Statamic\Forms\Submission;
 
 class SpamTest extends TestCase
@@ -17,7 +15,7 @@ class SpamTest extends TestCase
 
     private Submission $submission;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Silentz\Akismet\Tests;
+namespace Tests;
 
 use nickurt\Akismet\ServiceProvider as AkismetServiceProvider;
 use Silentz\Akismet\ServiceProvider;
