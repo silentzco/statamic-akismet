@@ -10,7 +10,7 @@ export default defineConfig({
                 'resources/js/cp.js',
                 'resources/css/cp.css'
             ],
-            publicDirectory: 'resources/dist',
+            publicDirectory: 'dist',
         }),
         statamic(),
         tailwindcss(),
