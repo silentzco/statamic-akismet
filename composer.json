@@ -42,7 +42,7 @@
     },
     "extra": {
         "download-dist": {
-            "path": "resources/dist",
+            "path": "dist",
             "url": "https://github.com/silentzco/statamic-akismet/releases/download/{$version}/dist.tar.gz"
         },
         "laravel": {

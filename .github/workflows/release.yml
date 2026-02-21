@@ -39,7 +39,7 @@ jobs:
         run: npm run build
 
       - name: Create zip
-        run: tar -czvf dist.tar.gz resources/dist
+        run: tar -czvf dist.tar.gz dist
 
       - name: Upload zip to release
         uses: actions/upload-release-asset@v1
