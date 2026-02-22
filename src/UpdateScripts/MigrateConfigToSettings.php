@@ -9,7 +9,7 @@ class MigrateConfigToSettings extends UpdateScript
 {
     public function shouldUpdate($newVersion, $oldVersion)
     {
-        return $this->isUpdatingTo('6.0');
+        return $this->isUpdatingTo('6.1');
     }
 
     public function update()
