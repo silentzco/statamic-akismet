@@ -2,6 +2,17 @@
 
 All notable changes to `statamic-akismet` will be documented in this file.
 
+## v6.1.0 - 2026-02-22
+
+### 🚀 New
+
+- Migrate config to settings [@edalzell](https://github.com/edalzell) (#66)
+
+### 🐛 Fixed
+
+- Fix spam detection [@edalzell](https://github.com/edalzell) (#64)
+- Fix the asset build [@edalzell](https://github.com/edalzell) (#61)
+
 ## v6.0.2 - 2026-02-10
 
 ### 🚀 New
