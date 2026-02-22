@@ -7,11 +7,7 @@ use Statamic\Facades\Form;
 use Statamic\Forms\Submission as StatamicSubmission;
 
 it('handles form submissions', function (string $form, bool $expectation) {
-    $this->mock(SettingsRepository::class)
-        ->shouldReceive('find')
-        ->with('silentz/akismet')
-        ->andReturn(settings(['forms' => ['contact_us' => []]]))
-        ->once();
+    mockSettings(['form' => 'contact_us'])->once();
 
     $submission = tap(new StatamicSubmission)->form(Form::make($form));
 
@@ -22,14 +18,12 @@ it('handles form submissions', function (string $form, bool $expectation) {
 ]);
 
 it('sets akismet data properly', function () {
-    $this->mock(SettingsRepository::class)
-        ->shouldReceive('find')
-        ->with('silentz/akismet')
-        ->andReturn(settings(['forms' => ['contact_us' => [
-            'email_field' => 'email',
-            'name_field' => 'name',
-            'content_field' => 'message',
-        ]]]))->twice();
+    mockSettings([
+        'form' => 'test_form',
+        'email_field' => 'email',
+        'name_field' => 'name',
+        'content_field' => 'message',
+    ])->twice();
 
     $fillData = [
         'blog' => 'http://localhost',
@@ -44,7 +38,7 @@ it('sets akismet data properly', function () {
         ->shouldReceive('isSpam')->andReturn(false);
 
     $submission = tap(new StatamicSubmission)
-        ->form(Form::make('contact_us'))
+        ->form(Form::make('test_form'))
         ->data([
             'email' => 'akismet-guaranteed-spam@example.com',
             'name' => 'akismet-guaranteed-spam',
@@ -55,15 +49,13 @@ it('sets akismet data properly', function () {
 });
 
 it('can detect email only spam', function () {
-    $this->mock(SettingsRepository::class, fn ($mock) => $mock
-        ->shouldReceive('find')
-        ->with('silentz/akismet')
-        ->andReturn(settings(['forms' => ['contact_us' => ['email_field' => 'email']]]))
-        ->once()
-    );
+    mockSettings([
+        'form' => 'test_form',
+        'email_field' => 'email',
+    ])->twice();
 
     $submission = tap(new StatamicSubmission)
-        ->form(Form::make('contact_us'))
+        ->form(Form::make('test_form'))
         ->data(['email' => 'akismet-guaranteed-spam@example.com']);
 
     expect(new Submission($submission))->isSpam()->toBeTrue();

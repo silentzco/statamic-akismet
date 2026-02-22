@@ -86,12 +86,12 @@ class Submission extends AbstractSpam
 
     public function shouldProcess(): bool
     {
-        return ! is_null(Settings::get("forms.{$this->submission->form->handle()}"));
+        return Settings::isConfigured($this->submission->form->handle());
     }
 
     protected function akismetData(): array
     {
-        $settings = Settings::get("forms.{$this->submission->form->handle()}");
+        $settings = Settings::forForm($this->submission->form->handle());
 
         return [
             'blog' => URL::makeAbsolute(Site::default()->url()),
@@ -104,7 +104,7 @@ class Submission extends AbstractSpam
 
     private function getName(): string
     {
-        $settings = Settings::get("forms.{$this->submission->form->handle()}");
+        $settings = Settings::forForm($this->submission->form->handle());
 
         if ($name = Arr::get($settings, 'name_field', Arr::get($settings, 'author_field'))) {
             return trim($this->submission->get($name));

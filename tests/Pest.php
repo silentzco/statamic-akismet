@@ -1,6 +1,8 @@
 <?php
 
+use Mockery\CompositeExpectation;
 use Statamic\Addons\Settings as AbstractSettings;
+use Statamic\Contracts\Addons\SettingsRepository;
 use Statamic\Facades\Addon;
 
 /*
@@ -15,6 +17,7 @@ use Statamic\Facades\Addon;
 */
 
 pest()->extend(Tests\TestCase::class)->in(__DIR__);
+
 /*
 |--------------------------------------------------------------------------
 | Expectations
@@ -40,6 +43,14 @@ expect()->extend('toBeOne', function () {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
+
+function mockSettings(array $formConfig): CompositeExpectation
+{
+    return test()->mock(SettingsRepository::class)
+        ->shouldReceive('find')
+        ->with('silentz/akismet')
+        ->andReturn(settings(['forms' => [$formConfig]]));
+}
 
 function settings(array $data): Settings
 {
