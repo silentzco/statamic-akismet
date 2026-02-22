@@ -5,9 +5,10 @@ tabs:
           fields:
             - handle: forms
               field:
-                mode: table
+                mode: stacked
                 reorderable: false
                 display: Forms
+                full_width_setting: true
                 type: grid
                 fields:
                   -
