@@ -104,13 +104,13 @@ class Submission extends AbstractSpam
 
     private function getName(): string
     {
-        $config = Arr::get(config('akismet.forms'), $this->submission->form->handle());
+        $settings = Settings::get("forms.{$this->submission->form->handle()}");
 
-        if ($name = Arr::get($config, 'name_field', Arr::get($config, 'author_field'))) {
+        if ($name = Arr::get($settings, 'name_field', Arr::get($settings, 'author_field'))) {
             return trim($this->submission->get($name));
         }
 
-        if (! Arr::has($config, 'first_name_field') && ! Arr::has($config, 'last_name_field')) {
+        if (! Arr::has($settings, 'first_name_field') && ! Arr::has($settings, 'last_name_field')) {
             return '';
         }
 
