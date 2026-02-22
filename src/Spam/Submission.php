@@ -3,6 +3,7 @@
 namespace Silentz\Akismet\Spam;
 
 use Illuminate\Support\Facades\Storage;
+use Silentz\Akismet\Settings;
 use Statamic\Events\Event;
 use Statamic\Facades\Path;
 use Statamic\Facades\Site;
@@ -44,7 +45,8 @@ class Submission extends AbstractSpam
         $this->submission = $submission;
     }
 
-    public function makeHam(): void {
+    public function makeHam(): void
+    {
         $this->delete();
         $this->submitHam();
 
@@ -84,31 +86,31 @@ class Submission extends AbstractSpam
 
     public function shouldProcess(): bool
     {
-        return Arr::has(config('akismet.forms'), $this->submission->form->handle());
+        return Settings::isConfigured($this->submission->form->handle());
     }
 
     protected function akismetData(): array
     {
-        $config = Arr::get(config('akismet.forms'), $this->submission->form->handle());
+        $settings = Settings::forForm($this->submission->form->handle());
 
         return [
             'blog' => URL::makeAbsolute(Site::default()->url()),
             'comment_type' => 'contact-form',
             'comment_author' => $this->getName(),
-            'comment_author_email' => $this->submission->get(Arr::get($config, 'email_field')),
-            'comment_content' => $this->submission->get(Arr::get($config, 'content_field')),
+            'comment_author_email' => $this->submission->get(Arr::get($settings, 'email_field')),
+            'comment_content' => $this->submission->get(Arr::get($settings, 'content_field')),
         ];
     }
 
     private function getName(): string
     {
-        $config = Arr::get(config('akismet.forms'), $this->submission->form->handle());
+        $settings = Settings::forForm($this->submission->form->handle());
 
-        if ($name = Arr::get($config, 'name_field', Arr::get($config, 'author_field'))) {
+        if ($name = Arr::get($settings, 'name_field', Arr::get($settings, 'author_field'))) {
             return trim($this->submission->get($name));
         }
 
-        if (! Arr::has($config, 'first_name_field') && ! Arr::has($config, 'last_name_field')) {
+        if (! Arr::has($settings, 'first_name_field') && ! Arr::has($settings, 'last_name_field')) {
             return '';
         }
 

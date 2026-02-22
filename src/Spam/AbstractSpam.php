@@ -13,17 +13,11 @@ abstract class AbstractSpam implements Spam
         $this->akismetApi = app(Akismet::class);
     }
 
-    public function addToQueue(): void
-    {
-    }
+    public function addToQueue(): void {}
 
-    public function addToSubmissions(): void
-    {
-    }
+    public function addToSubmissions(): void {}
 
-    public function delete(): void
-    {
-    }
+    public function delete(): void {}
 
     public function isSpam(): bool
     {

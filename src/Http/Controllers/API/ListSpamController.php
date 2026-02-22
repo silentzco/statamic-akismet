@@ -24,7 +24,6 @@ class ListSpamController extends CpController
             });
         });
 
-        return new Submissions($submissions)
-        ->blueprint($form->blueprint());
+        return (new Submissions($submissions))->blueprint($form->blueprint());
     }
 }

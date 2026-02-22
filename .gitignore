@@ -1,8 +1,9 @@
-/mix-manifest.json
+/dist
 /node_modules
-/package-lock.json
 /resources/dist
 /vendor
+/.phpunit.cache
 /.phpunit.result.cache
 /composer.lock
-/.phpunit.cache
+/package-lock.json
+/phpunit.xml
