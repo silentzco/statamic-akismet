@@ -37,6 +37,6 @@ jobs:
              composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --dev
 
       - name: Execute tests
-        run: vendor/bin/phpunit -c phpunit.xml
+        run: vendor/bin/pest
         env:
-          MAILCHIMP_API_KEY: ${{ secrets.MailchimpApiKey }}
+          AKISMET_API_KEY: ${{ secrets.AkismetApiKey }}
