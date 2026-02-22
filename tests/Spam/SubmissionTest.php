@@ -1,79 +1,44 @@
 <?php
 
-use PHPUnit\Framework\Attributes\Test;
-use Silentz\Akismet\Tests\TestCase;
-use Statamic\Events\FormSubmitted;
-use Statamic\Facades\Form as FormAPI;
-use Statamic\Facades\YAML;
-use Statamic\Fields\Blueprint;
-use Statamic\Forms\Form;
-use Statamic\Forms\Submission;
+use Silentz\Akismet\Spam\Submission;
+use Statamic\Contracts\Addons\SettingsRepository;
+use Statamic\Facades\Addon;
+use Statamic\Facades\Form;
+use Statamic\Forms\Submission as StatamicSubmission;
 
-class SpamTest extends TestCase
-{
-    private Form $form;
+it('handles form submissions', function (string $form, bool $expectation) {
+    $this->mock(SettingsRepository::class, fn ($mock) => $mock
+        ->shouldReceive('find')
+        ->with('silentz/akismet')
+        ->andReturn(settings(['forms' => ['contact_us' => []]]))
+        ->once()
+    );
 
-    private Submission $submission;
+    $submission = tap(new StatamicSubmission)->form(Form::make($form));
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+    expect(new Submission($submission))->shouldProcess()->toBe($expectation);
+})->with([
+    ['not_configured', false],
+    ['contact_us', true],
+]);
 
-        FormAPI::all()->each->delete();
+it('can detect email only spam', function () {
+    $settings = new Settings(
+        Addon::get('silentz/akismet'),
+        ['forms' => ['contact_us' => ['email_field' => 'email']]]
+    );
 
-        $path = __DIR__.'/../__fixtures__/contact_us.yaml';
-        $contents = YAML::file($path)->parse();
-        $blueprint = Blueprint::make()->setContents($contents);
+    $this->mock(SettingsRepository::class, function ($mock) use ($settings) {
+        $mock
+            ->shouldReceive('find')
+            ->with('silentz/akismet')
+            ->andReturn($settings)
+            ->once();
+    });
 
-        Blueprint::shouldReceive('find')->with('forms.contact_us')->andReturn($blueprint);
+    $submission = tap(new StatamicSubmission)
+        ->form(Form::make('contact_us'))
+        ->data(['email' => 'akismet-guaranteed-spam@example.com']);
 
-        $this->form = FormAPI::make('contact_us')
-            ->title('Contact Us');
-
-        $this->form->save();
-
-        $this->submission = $this->form->makeSubmission()->data(
-            [
-                'name' => 'viagra-test-123',
-                'email' => 'akismet-guaranteed-spam@example.com',
-                'message' => '',
-            ]
-        );
-    }
-
-    #[Test]
-    public function can_detect_spam()
-    {
-        config([
-            'akismet.forms' => [
-                'contact_us' => [
-                    'author_field' => 'name',
-                    'email_field' => 'email',
-                    'content_field' => 'message',
-                ],
-            ],
-        ]);
-
-        $this->assertFalse(FormSubmitted::dispatch($this->submission));
-    }
-
-    #[Test]
-    public function can_detect_spam_with_only_email()
-    {
-        config([
-            'akismet.forms' => [
-                'contact_us' => [
-                    'email_field' => 'email',
-                ],
-            ],
-        ]);
-
-        $submission = $this->form->makeSubmission()->data(
-            [
-                'email' => 'akismet-guaranteed-spam@example.com',
-            ]
-        );
-
-        $this->assertFalse(FormSubmitted::dispatch($submission));
-    }
-}
+    expect(new Submission($submission))->isSpam()->toBeTrue();
+});
