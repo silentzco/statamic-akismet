@@ -5,10 +5,11 @@ tabs:
           fields:
             - handle: forms
               field:
-                mode: stacked
+                mode: table
                 reorderable: false
                 display: Forms
                 full_width_setting: true
+                add_row: 'Add Form'
                 type: grid
                 fields:
                   -
@@ -18,39 +19,39 @@ tabs:
                       type: form
                       max_items: 1
                       mode: select
-                      width: 33
+                      width: 16
                   -
                     handle: name_field
                     field:
                       display: 'Name Field'
                       input_type: text
                       type: text
-                      width: 33
+                      width: 16
                   -
                     handle: first_name_field
                     field:
                       display: 'First Name Field'
                       input_type: text
                       type: text
-                      width: 33
+                      width: 16
                   -
                     handle: last_name_field
                     field:
                       display: 'Last Name Field'
                       input_type: text
                       type: text
-                      width: 33
+                      width: 16
                   -
                     handle: email_field
                     field:
                       display: 'Email Field'
                       input_type: text
                       type: text
-                      width: 33
+                      width: 16
                   -
                     handle: content_field
                     field:
                       input_type: text
                       display: 'Content Field'
                       type: text
-                      width: 33
+                      width: 16

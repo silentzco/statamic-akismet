@@ -1,7 +1,7 @@
 <template>
-    <Head title="Spam" />
+    <Head :title="title" />
 
-    <Heading :level=1 size="lg" class="mt-4">Spam</Heading>
+    <Heading :level=1 size="lg" :text="title" class="mt-4"/>
 
     <Listing
         :actionUrl="runActionUrl"
@@ -22,6 +22,7 @@ import { DropdownItem, Heading, Listing } from '@statamic/cms/ui';
 const props = defineProps({
     columns: { type: Array },
     form: { type: String, required: true },
+    title: { type: String, required: true }
 })
 
 const requestUrl = cp_url(`akismet/api/queues/${props.form}/spam`);
