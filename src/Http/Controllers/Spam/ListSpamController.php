@@ -15,6 +15,7 @@ class ListSpamController extends Controller
             [
                 'columns' => ['name', 'email'],
                 'form' => $form->handle(),
+                'title' => $form->title(),
             ]
         );
     }
