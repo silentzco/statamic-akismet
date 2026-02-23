@@ -2,6 +2,13 @@
 
 All notable changes to `statamic-akismet` will be documented in this file.
 
+## v6.1.1 - 2026-02-23
+
+### 🐛 Fixed
+
+- Update docs [@edalzell](https://github.com/edalzell) (#68)
+- Better settings layout [@edalzell](https://github.com/edalzell) (#67)
+
 ## v6.1.0 - 2026-02-22
 
 ### 🚀 New
