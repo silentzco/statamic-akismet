@@ -1,24 +1,25 @@
 <?php
 
+use Silentz\Akismet\Exceptions\FormException;
+use Silentz\Akismet\FormSettings;
 use Silentz\Akismet\Settings;
 
-it('can check for form settings', function (string $form, bool $expectation) {
-    mockSettings(['form' => 'test_form'])->once();
-
-    expect(Settings::isConfigured('test_form'))->toBeTrue();
-})->with([
-    ['not_configured', false],
-    ['test_form', true],
-]);
-
-it('can get form settings', function () {
-    $formConfig = [
+it('returns a FormSettings DTO from forForm()', function () {
+    mockSettings([
         'form' => 'test_form',
         'name_field' => 'name',
         'email_field' => 'email',
-    ];
+    ])->once();
 
-    mockSettings($formConfig)->once();
+    $settings = Settings::forForm('test_form');
 
-    expect(Settings::forForm('test_form'))->toEqual($formConfig);
+    expect($settings)->toBeInstanceOf(FormSettings::class)
+        ->and($settings->name)->toBe('name')
+        ->and($settings->email)->toBe('email');
 });
+
+it('throws FormException from forForm() when form is not configured', function () {
+    mockSettings(['form' => 'other_form'])->once();
+
+    Settings::forForm('not_configured');
+})->throws(FormException::class);

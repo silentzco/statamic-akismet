@@ -93,3 +93,34 @@ it('uses first_name_field and last_name_field to build author name', function ()
 
     (new Submission($submission))->isSpam();
 });
+
+it('uses author_field as fallback when name_field is absent', function () {
+    mockSettings([
+        'form' => 'test_form',
+        'author_field' => 'author',
+        'email_field' => 'email',
+        'content_field' => 'message',
+    ])->twice();
+
+    $fillData = [
+        'blog' => 'http://localhost',
+        'comment_type' => 'contact-form',
+        'comment_author' => 'Jane Smith',
+        'comment_author_email' => 'jane@example.com',
+        'comment_content' => 'Hello',
+    ];
+
+    $this->mock(Akismet::class)
+        ->shouldReceive('fill')->with($fillData)->andReturnSelf()
+        ->shouldReceive('isSpam')->andReturn(false);
+
+    $submission = tap(new StatamicSubmission)
+        ->form(Form::make('test_form'))
+        ->data([
+            'author' => 'Jane Smith',
+            'email' => 'jane@example.com',
+            'message' => 'Hello',
+        ]);
+
+    (new Submission($submission))->isSpam();
+});
