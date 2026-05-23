@@ -9,16 +9,15 @@ it('maps all fields from array', function () {
         'email_field' => 'email',
         'content_field' => 'message',
         'name_field' => 'name',
-        'author_field' => 'author',
         'first_name_field' => 'first_name',
         'last_name_field' => 'last_name',
     ]);
 
-    expect($settings->email())->toBe('email')
-        ->and($settings->content())->toBe('message')
-        ->and($settings->name())->toBe('name')
-        ->and($settings->firstName())->toBe('first_name')
-        ->and($settings->lastName())->toBe('last_name');
+    expect($settings->email)->toBe('email')
+        ->and($settings->content)->toBe('message')
+        ->and($settings->name)->toBe('name')
+        ->and($settings->firstName)->toBe('first_name')
+        ->and($settings->lastName)->toBe('last_name');
 });
 
 it('throws when form key is absent', function () {
@@ -29,22 +28,22 @@ it('throws when form key is empty string', function () {
     FormSettings::fromArray(['form' => '']);
 })->throws(FormException::class);
 
-it('returns name_field value from name()', function () {
+it('resolves name from name_field', function () {
     $settings = FormSettings::fromArray(['form' => 'f', 'name_field' => 'full_name', 'author_field' => 'author']);
 
-    expect($settings->name())->toBe('full_name');
+    expect($settings->name)->toBe('full_name');
 });
 
 it('falls back to author_field when name_field is absent', function () {
     $settings = FormSettings::fromArray(['form' => 'f', 'author_field' => 'author']);
 
-    expect($settings->name())->toBe('author');
+    expect($settings->name)->toBe('author');
 });
 
-it('returns null from name() when neither name_field nor author_field is set', function () {
+it('name is null when neither name_field nor author_field is set', function () {
     $settings = FormSettings::fromArray(['form' => 'f']);
 
-    expect($settings->name())->toBeNull();
+    expect($settings->name)->toBeNull();
 });
 
 it('hasFirstAndLastName() is true when both are set', function () {

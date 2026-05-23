@@ -3,6 +3,7 @@
 namespace Silentz\Akismet\Spam;
 
 use Illuminate\Support\Facades\Storage;
+use Silentz\Akismet\Exceptions\FormException;
 use Silentz\Akismet\Settings;
 use Statamic\Events\Event;
 use Statamic\Facades\Path;
@@ -85,7 +86,12 @@ class Submission extends AbstractSpam
 
     public function shouldProcess(): bool
     {
-        return Settings::isConfigured($this->submission->form->handle());
+        try {
+            Settings::forForm($this->submission->form->handle());
+            return true;
+        } catch (FormException) {
+            return false;
+        }
     }
 
     protected function akismetData(): array
@@ -96,8 +102,8 @@ class Submission extends AbstractSpam
             'blog' => URL::makeAbsolute(Site::default()->url()),
             'comment_type' => 'contact-form',
             'comment_author' => $this->getName(),
-            'comment_author_email' => $this->submission->get($settings->email()),
-            'comment_content' => $this->submission->get($settings->content()),
+            'comment_author_email' => $this->submission->get($settings->email),
+            'comment_content' => $this->submission->get($settings->content),
         ];
     }
 
@@ -105,7 +111,7 @@ class Submission extends AbstractSpam
     {
         $settings = Settings::forForm($this->submission->form->handle());
 
-        if ($name = $settings->name()) {
+        if ($name = $settings->name) {
             return trim($this->submission->get($name));
         }
 
@@ -113,8 +119,8 @@ class Submission extends AbstractSpam
             return '';
         }
 
-        $firstName = $this->submission->get($settings->firstName());
-        $lastName = $this->submission->get($settings->lastName());
+        $firstName = $this->submission->get($settings->firstName);
+        $lastName = $this->submission->get($settings->lastName);
 
         return trim($firstName.' '.$lastName);
     }

@@ -3,20 +3,20 @@
 namespace Silentz\Akismet;
 
 use Illuminate\Support\Arr;
+use Silentz\Akismet\Exceptions\FormException;
 use Statamic\Facades\Addon;
 
 class Settings
 {
-    public static function forForm(string $form): ?FormSettings
+    public static function forForm(string $form): FormSettings
     {
         $forms = Addon::get('silentz/akismet')->setting('forms', []);
         $config = Arr::first($forms, fn (array $config) => Arr::get($config, 'form') == $form);
 
-        return $config ? FormSettings::fromArray($config) : null;
-    }
+        if (! $config) {
+            throw FormException::missingForm();
+        }
 
-    public static function isConfigured(string $form): bool
-    {
-        return static::forForm($form) !== null;
+        return FormSettings::fromArray($config);
     }
 }
