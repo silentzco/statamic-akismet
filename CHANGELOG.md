@@ -2,6 +2,17 @@
 
 All notable changes to `statamic-akismet` will be documented in this file.
 
+## v6.1.2 - 2026-05-23
+
+### 🐛 Fixed
+
+- Fix `first_name` & `last_name` issue [@edalzell](https://github.com/edalzell) (#72)
+
+### 🧰 Maintenance
+
+- Update GitHub Action Versions [@edalzell](https://github.com/edalzell) (#70)
+- Update GitHub Action Versions [@edalzell](https://github.com/edalzell) (#69)
+
 ## v6.1.1 - 2026-02-23
 
 ### 🐛 Fixed
