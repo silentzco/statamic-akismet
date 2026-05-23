@@ -11,7 +11,6 @@ use Statamic\Facades\URL;
 use Statamic\Facades\YAML;
 use Statamic\Forms\Form;
 use Statamic\Forms\Submission as StatamicSubmission;
-use Statamic\Support\Arr;
 
 class Submission extends AbstractSpam
 {
@@ -97,8 +96,8 @@ class Submission extends AbstractSpam
             'blog' => URL::makeAbsolute(Site::default()->url()),
             'comment_type' => 'contact-form',
             'comment_author' => $this->getName(),
-            'comment_author_email' => $this->submission->get(Arr::get($settings, 'email_field')),
-            'comment_content' => $this->submission->get(Arr::get($settings, 'content_field')),
+            'comment_author_email' => $this->submission->get($settings->email()),
+            'comment_content' => $this->submission->get($settings->content()),
         ];
     }
 
@@ -106,16 +105,16 @@ class Submission extends AbstractSpam
     {
         $settings = Settings::forForm($this->submission->form->handle());
 
-        if ($name = Arr::get($settings, 'name_field', Arr::get($settings, 'author_field'))) {
+        if ($name = $settings->name()) {
             return trim($this->submission->get($name));
         }
 
-        if (! Arr::has($settings, 'first_name_field') && ! Arr::has($settings, 'last_name_field')) {
+        if (! $settings->hasFirstAndLastName()) {
             return '';
         }
 
-        $firstName = $this->submission->get(Arr::get($settings, 'first_name_field'));
-        $lastName = $this->submission->get(Arr::get($settings, 'last_name_field'));
+        $firstName = $this->submission->get($settings->firstName());
+        $lastName = $this->submission->get($settings->lastName());
 
         return trim($firstName.' '.$lastName);
     }
