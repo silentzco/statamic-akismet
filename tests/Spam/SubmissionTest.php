@@ -60,3 +60,36 @@ it('can detect email only spam', function () {
 
     expect(new Submission($submission))->isSpam()->toBeTrue();
 });
+
+it('uses first_name_field and last_name_field to build author name', function () {
+    mockSettings([
+        'form' => 'test_form',
+        'first_name_field' => 'first_name',
+        'last_name_field' => 'last_name',
+        'email_field' => 'email',
+        'content_field' => 'message',
+    ])->twice();
+
+    $fillData = [
+        'blog' => 'http://localhost',
+        'comment_type' => 'contact-form',
+        'comment_author' => 'John Doe',
+        'comment_author_email' => 'john@example.com',
+        'comment_content' => 'Hello',
+    ];
+
+    $this->mock(Akismet::class)
+        ->shouldReceive('fill')->with($fillData)->andReturnSelf()
+        ->shouldReceive('isSpam')->andReturn(false);
+
+    $submission = tap(new StatamicSubmission)
+        ->form(Form::make('test_form'))
+        ->data([
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@example.com',
+            'message' => 'Hello',
+        ]);
+
+    (new Submission($submission))->isSpam();
+});
