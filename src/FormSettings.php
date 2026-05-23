@@ -18,19 +18,18 @@ class FormSettings
 
     public static function fromArray(array $config): self
     {
-        $form = Arr::get($config, 'form');
-
-        if (empty($form)) {
-            throw FormException::missingForm();
-        }
+        throw_unless(
+            $form = Arr::get($config, 'form'),
+            FormException::missingForm()
+        );
 
         return new self(
-            form:      $form,
-            email:     Arr::get($config, 'email_field'),
-            content:   Arr::get($config, 'content_field'),
-            name:      Arr::get($config, 'name_field') ?? Arr::get($config, 'author_field'),
+            form: $form,
+            email: Arr::get($config, 'email_field'),
+            content: Arr::get($config, 'content_field'),
+            name: Arr::get($config, 'name_field') ?? Arr::get($config, 'author_field'),
             firstName: Arr::get($config, 'first_name_field'),
-            lastName:  Arr::get($config, 'last_name_field'),
+            lastName: Arr::get($config, 'last_name_field'),
         );
     }
 

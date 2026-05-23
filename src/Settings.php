@@ -13,9 +13,7 @@ class Settings
         $forms = Addon::get('silentz/akismet')->setting('forms', []);
         $config = Arr::first($forms, fn (array $config) => Arr::get($config, 'form') == $form);
 
-        if (! $config) {
-            throw FormException::missingForm();
-        }
+        throw_unless($config, FormException::missingForm());
 
         return FormSettings::fromArray($config);
     }
