@@ -114,8 +114,8 @@ class Submission extends AbstractSpam
             return '';
         }
 
-        $firstName = $this->submission->get(Arr::get($config, 'first_name_field'));
-        $lastName = $this->submission->get(Arr::get($config, 'last_name_field'));
+        $firstName = $this->submission->get(Arr::get($settings, 'first_name_field'));
+        $lastName = $this->submission->get(Arr::get($settings, 'last_name_field'));
 
         return trim($firstName.' '.$lastName);
     }
