@@ -4,6 +4,7 @@ namespace Silentz\Akismet\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Statamic\Contracts\Forms\Form as FormContract;
 use Statamic\Facades\Form;
 use Statamic\Http\Controllers\Controller;
 use Statamic\Support\Str;
@@ -15,7 +16,7 @@ class ShowQueuesController extends Controller
         $spamQueues = collect(Storage::directories('spam'))
             ->map(fn (string $path) => Form::find(Str::removeLeft($path, 'spam/')))
             ->filter()
-            ->map(fn ($form) => [
+            ->map(fn (FormContract $form) => [
                 'count' => count(Storage::files("spam/{$form->handle()}")),
                 'handle' => $form->handle(),
                 'link' => cp_route('akismet.spam.index', ['form' => $form->handle()]),
