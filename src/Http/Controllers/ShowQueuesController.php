@@ -15,6 +15,10 @@ class ShowQueuesController extends Controller
         $spamQueues = collect(Storage::directories('spam'))
             ->map(function (string $path) {
                 $form = Form::find(Str::removeLeft($path, 'spam/'));
+                
+                if (! $form) {
+                    return;
+                }
 
                 return [
                     'count' => count(Storage::files($path)),
@@ -22,7 +26,9 @@ class ShowQueuesController extends Controller
                     'link' => cp_route('akismet.spam.index', ['form' => $form->handle()]),
                     'title' => $form->title(),
                 ];
-            })->filter(fn (array $queue) => $queue['count']);
+            })
+            ->filter()
+            ->filter(fn (array $queue) => $queue['count']);
 
         return Inertia::render('akismet::Queues', ['queues' => $spamQueues]);
     }
