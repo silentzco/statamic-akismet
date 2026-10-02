@@ -2,6 +2,20 @@
 
 All notable changes to `statamic-akismet` will be documented in this file.
 
+## v6.1.3 - 2026-10-02
+
+### 🐛 Fixed
+
+- Fix error when spam queue relates to a deleted form [@duncanmcclean](https://github.com/duncanmcclean) (#78)
+- Fake Akismet requests in tests [@duncanmcclean](https://github.com/duncanmcclean) (#79)
+
+### 🧰 Maintenance
+
+- Run tests once per PR push [@edalzell](https://github.com/edalzell) (#82)
+- Test against Laravel 13 and PHP 8.5 [@edalzell](https://github.com/edalzell) (#81)
+- Use shared release drafter workflow [@edalzell](https://github.com/edalzell) (#80)
+- Update GitHub Action Versions [@edalzell](https://github.com/edalzell) (#77)
+
 ## v6.1.2 - 2026-05-23
 
 ### 🐛 Fixed
