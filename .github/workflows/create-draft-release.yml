@@ -1,19 +1,12 @@
 name: Release Drafter
 
 on:
-  pull_request:
+  pull_request_target:
     types: [closed]
-permissions:
-  contents: read
 
 jobs:
-  update_release_draft:
-    if: github.event.pull_request.merged == true
+  draft:
+    uses: edalzell/github-workflows/.github/workflows/release-draft.yml@d3f1ca37a5377c14d34fc54320cc8d8141badfe5 # v1.5.0
     permissions:
       contents: write
       pull-requests: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: release-drafter/release-drafter@v7.7.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
