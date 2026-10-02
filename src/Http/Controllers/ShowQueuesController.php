@@ -14,18 +14,14 @@ class ShowQueuesController extends Controller
     {
         $spamQueues = collect(Storage::directories('spam'))
             ->map(function (string $path) {
-                $form = Form::find(Str::removeLeft($path, 'spam/'));
-                
-                if (! $form) {
-                    return;
+                if (! is_null($form = Form::find(Str::removeLeft($path, 'spam/')))) {
+                    return [
+                        'count' => count(Storage::files($path)),
+                        'handle' => $form->handle(),
+                        'link' => cp_route('akismet.spam.index', ['form' => $form->handle()]),
+                        'title' => $form->title(),
+                    ];
                 }
-
-                return [
-                    'count' => count(Storage::files($path)),
-                    'handle' => $form->handle(),
-                    'link' => cp_route('akismet.spam.index', ['form' => $form->handle()]),
-                    'title' => $form->title(),
-                ];
             })
             ->filter()
             ->filter(fn (array $queue) => $queue['count']);
