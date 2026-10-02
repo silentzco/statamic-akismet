@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Http;
 use nickurt\Akismet\Akismet;
 use Silentz\Akismet\Spam\Submission;
 use Statamic\Contracts\Addons\SettingsRepository;
@@ -54,11 +56,15 @@ it('can detect email only spam', function () {
         'email_field' => 'email',
     ])->twice();
 
+    Http::fake(['*rest.akismet.com/*/comment-check' => Http::response('true')]);
+
     $submission = tap(new StatamicSubmission)
         ->form(Form::make('test_form'))
         ->data(['email' => 'akismet-guaranteed-spam@example.com']);
 
     expect(new Submission($submission))->isSpam()->toBeTrue();
+
+    Http::assertSent(fn (Request $request) => $request['comment_author_email'] === 'akismet-guaranteed-spam@example.com');
 });
 
 it('uses first_name_field and last_name_field to build author name', function () {

@@ -38,5 +38,3 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/pest
-        env:
-          AKISMET_API_KEY: ${{ secrets.AkismetApiKey }}
